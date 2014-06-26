@@ -1,0 +1,13 @@
+# OS generated files - I don't think any are there though
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore my build directory 
+build/
+Build/
+
