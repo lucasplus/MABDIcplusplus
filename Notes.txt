@@ -1,0 +1,16 @@
+Here it begins
+
+Goals:
+1. Load and show ply files
+2. Simulate view of loaded ply files
+
+______________________________________________________________ Include files
+
+Sure
+  #include <pcl/io/pcd_io.h> - Point Cloud Data (PCD) file format reader
+
+Not Sure
+  #include <pcl/point_types.h> - Defines all the PCL implemented PointT point type structures
+  #include <pcl/point_cloud.h> - PointCloud represents a base class in PCL for storing collections of 3D points
+
+
