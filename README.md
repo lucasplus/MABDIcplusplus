@@ -2,12 +2,12 @@
 
 On this page:
 
-  * [What is this?](https://bitbucket.org/lucasplus/allprojects/overview/#markdown-header-what-is-this)
-  * [Build Notes](https://bitbucket.org/lucasplus/allprojects/overview/#markdown-header-build-notes)
-    * [Required software and source libraries](https://bitbucket.org/lucasplus/allprojects/overview/#markdown-header-required-software-and-source-libraries)
-    * [Generating documentation from source](https://bitbucket.org/lucasplus/allprojects/overview/#markdown-header-generating-documentation-from-source)
-    * [Additional notes](https://bitbucket.org/lucasplus/allprojects/overview/#markdown-header-additional-notes)
-  * [Notes](https://bitbucket.org/lucasplus/allprojects/overview/#markdown-header-notes)
+  * [What is this?](#what-is-this)
+  * [Build Notes](#build-notes)
+    * [Third party libraries](#third-party-libraries)
+    * [Installing third party libraries on Windows](#Installing-third-party-libraries-on-Windows)
+    * [Additional build notes](#additional-build-notes)
+  * [Notes](#notes)
 
 ## What is this? 
 
@@ -142,20 +142,7 @@ required me to switch to Qt 4.
   * `configure -opensource -confirm-license -fast -debug-and-release -platform win32-msvc2012 -mp -opengl desktop -no-qt3support -no-xmlpatterns -no-multimedia -no-phonon -no-accessibility -no-openvg -no-webkit -no-script -no-scripttools -no-dbus -no-declarative`
   * Then run `nmake`
 
-### Generating documentation from source 
-
-My CMake system automates documentation generation from the source. It uses
-CMake's add_custom_target() to create a target who will call upon the Doxygen
-executable to generate the documentation in the build directory. All you have
-to do is build the MakeDoc target. 
-
-There are two ways to view the documentation:
-
-* Html - open Doc/html/index.html in your favorite browser
-* Pdf - If on unix machine: run make on Doc/latex/Makefile. If on windows: run
-  Doc/latex/make.bat. After this, you can open the generated refman.pdf. 
-
-### Additional notes 
+### Additional build notes 
 
 * lib/x64 of SDL2 had to be manually deleted. CMake insisted on finding the 64
   bit library instead of the 32. 
@@ -167,71 +154,3 @@ My memory is poor and if I don't write down all the ideas and facts swimming in
 my head it bogs down the main process a terrible amount. Result: many text
 files with a bunch of simple notes. Here is one for MABDI.
 
-### Build Strategy 
-
-I will be using a PIMPL Idiom, also known as a private implementation
-technique, to write the classes in my code. This technique is designed for
-large code databases, using it for MABDI is a bit overkill but will be good
-practice of a technique in use by most companies. 
-
-In essence, the implementation is done completely in the body of the class
-using member data containers of a single object that is defined within the
-body. That single class is the implementation, usually named Impl, and in the
-header of the class we just need to forward declare a pointer to the object. We
-can use different types of pointers:
-
-  * Use unique_ptr when you want a single pointer to an object that will be
-    reclaimed when that single pointer is destroyed.  
-  * Use shared_ptr when you want multiple pointers to the same resource.
-
-Change of plan: Running out of time. Would of liked to use PIMPL patterns. The new goal
-is: as simplistic as possible. Classes will be no fancier than needed.
-
-### Doxygen 
-
-Functionality I should make use of:
-
-* \\todo command will generate a todo list for me
-* \\test command adds to tests in test list
-* Expert->Dot->DOT_PATH is a field to find the dot executable. For when it can't be found on PATH
-* Expert->LaTeX->LATEX_SOURCE_CODE is a flag to include source code. 
-* Expert->Input->IMAGE_PATH is a path for images I specify with the \image command
-* Expert->Input->EXAMPLE_PATH is a path for example code fragments that are included with the \include command 
-* REPEAT_BRIEF - Don't repeat brief in detailed description
-
-State of my current configuration:
-
-* BRIEF_MEMBER_DESC - is on - will include brief member descriptions after the members that are listed in the file
-* REPEAT_BRIEF - no
-* JAVADOC_AUTOBRIEF - is yes 
-* HIDE_UNDOC_MEMBERS - no 
-
-### SDL2 map to xbox controller 
-
-Axes map:
-
-[ LSJSH LSJSV RSJSH RSJSV LT RT ]
-
-  * Read LSJSH as "Left side joystick horizontal"
-  * T stands for trigger.
-  * Joystick axes values range from -32768 to 32767. 
-  * Right and down are positive for the joystick axes.
-  * Triggers are -32768 until pressed, then headed to positive. 
-
-Buttons:
-
-  * 0: up
-  * 1: down
-  * 2: left
-  * 3: right
-  * 4: start
-  * 5: back
-  * 6: left joystick press down
-  * 7: right joystick press down
-  * 8: left bumper 
-  * 9: right bumper
-  * 10: A
-  * 11: B
-  * 12: X
-  * 13: Y
-  * 14: X button
