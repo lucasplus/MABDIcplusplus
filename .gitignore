@@ -11,3 +11,7 @@ Thumbs.db
 build/
 Build/
 
+# Ignore a folder where I put things I don't want to delete yet
+archive/
+Archive/
+

@@ -5,7 +5,7 @@ On this page:
   * [What is this?](#what-is-this)
   * [Build Notes](#build-notes)
     * [Third party libraries](#third-party-libraries)
-    * [Installing third party libraries on Windows](#Installing-third-party-libraries-on-Windows)
+    * [Installing third party libraries on Windows](#installing-third-party-libraries-on-windows)
     * [Additional build notes](#additional-build-notes)
   * [Notes](#notes)
 
