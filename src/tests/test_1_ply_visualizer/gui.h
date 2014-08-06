@@ -3,14 +3,29 @@
 #define GUI_H
 
 #include <QWidget>
+#include <QtWidgets>
 
-#include <vtkRenderWindow.h>
+#include <QString>
+#include <QSizePolicy>
+#include <QDir>
+#include <QStringList>
+#include <QFileInfoList>
 
 #include <QVTKWidget.h>
 
-// forward declaration
-class QTextEdit;
-class QPushButton;
+#include <vtkPolyData.h>
+#include <vtkPLYReader.h>
+#include <vtkSmartPointer.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkActor.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderer.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkInteractorStyle.h>
+
+#include <vector>
+#include <string>
 
 class Gui : public QWidget
 {
@@ -20,6 +35,9 @@ class Gui : public QWidget
     Gui( QWidget *parent = 0 );
   
   private:
+    std::vector< vtkSmartPointer<vtkPLYReader> > vecReader;
+    std::vector< vtkSmartPointer<vtkPolyDataMapper> > vecMapper;
+    std::vector< vtkSmartPointer<vtkActor> > vecActor;
     QTextEdit* statusText;
     QPushButton* goButton;
     QVTKWidget* renderWindowWidget;

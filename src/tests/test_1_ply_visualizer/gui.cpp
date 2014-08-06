@@ -1,32 +1,5 @@
 #include "gui.h"
 
-#include <QtGui>
-#include <QtWidgets> // QPushButton, QCheckBox
-#include <QVTKWidget.h>
-#include <QString>
-
-#include <QSizePolicy>
-
-#include <vtkPolyData.h>
-#include <vtkPLYReader.h>
-#include <vtkSmartPointer.h>
-
-#include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
-#include <vtkProperty.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyle.h>
-
-#include <vector>
-#include <string>
-
-#include <QDir>
-#include <QString>
-#include <QStringList>
-#include <QFileInfoList>
-
 // _________________________________________________________________________
 Gui::Gui( QWidget *parent ) : QWidget(parent)
 {
@@ -90,9 +63,6 @@ Gui::Gui( QWidget *parent ) : QWidget(parent)
   renderWindow->AddRenderer(renderer);
 
   // init and setup readers, mappers, actors
-  std::vector< vtkSmartPointer<vtkPLYReader> > vecReader;
-  std::vector< vtkSmartPointer<vtkPolyDataMapper> > vecMapper;
-  std::vector< vtkSmartPointer<vtkActor> > vecActor;
   double r, g, b;
   for( int i=0; i<plyFileInfoList.size(); ++i ){
     // vector of readers, init and setup
@@ -114,9 +84,8 @@ Gui::Gui( QWidget *parent ) : QWidget(parent)
   }
   renderer->SetBackground(238,232,170); 
   renderer->ResetCamera();
-
+  
   renderWindowWidget->GetRenderWindow()->AddRenderer(renderer);
-  //renderWindowInteractor->SetRenderWindow(renderWindowWidget->GetRenderWindow());
   renderWindowWidget->SetRenderWindow(renderWindow);
   renderWindowWidget->show();
 }
