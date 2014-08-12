@@ -1,6 +1,6 @@
 # AllProjects 
 
-On this page:
+## On this page:
 
   * [What is this?](#what-is-this)
   * [Build Notes](#build-notes)
@@ -19,7 +19,7 @@ MABDI uses [CMake](http://www.cmake.org/) as the build process generator. If you
 are unfamiliar with CMake you should do some quick tutorials, but the idea is
 that you write a script for a process that looks at your source code and
 generates a build solution. By build solution, I mean a project that can be
-compiled and ran. For example, if you are on Windows you will use CMake to
+compiled and run. For example, if you are on Windows you will use CMake to
 build a Visual Studio project of if you are on a Mac you can generate an Xcode
 project or a Makefile. This can be very useful, for example, if you want to get
 the new Visual Studio version. The idea is that you change your CMake generator
@@ -32,10 +32,14 @@ to the libraries they may need.
 
 Folder Structure:
 
-    Build - Only in .gitignore. User makes this folder. Use as a build area.
-    Src - My code for MABDI
-    Tests - Code to test ideas
-    Utilities - Has cmake scripts
+  * build - Not part of the repository, only mentioned in the .gitignore. User makes this folder. Use as a build area.
+  * src - upper directory for the MABDI code
+    * python - just has a Blender script to generate the .ply files I use
+    * tests - a sandbox area for playing with the code
+    * utils 
+      * ply - folder with ply files
+        * environment - ply files for my simulation environment 
+        * sensor - ply file for the kinect sensor
 
 ### Third party libraries 
 

@@ -13,6 +13,8 @@
 #include <vtkImageShiftScale.h>
 
 #include <vtkImageMapper.h>
+#include <vtkActor2D.h>
+#include <vtkInteractorStyleImage.h>
  
 int main(int argc, char *argv[])
 {
@@ -27,24 +29,35 @@ int main(int argc, char *argv[])
   
   vtkSmartPointer<vtkRenderer> rendererPoly = 
     vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderer> rendererDepth = 
+  vtkSmartPointer<vtkRenderer> rendererImage = 
     vtkSmartPointer<vtkRenderer>::New();
 
   vtkSmartPointer<vtkRenderWindow> renWinPoly = 
     vtkSmartPointer<vtkRenderWindow>::New();
-  vtkSmartPointer<vtkRenderWindow> renWinDepth = 
+  vtkSmartPointer<vtkRenderWindow> renWinImage = 
     vtkSmartPointer<vtkRenderWindow>::New();
   
-  vtkSmartPointer<vtkRenderWindowInteractor> interactor = 
+  vtkSmartPointer<vtkRenderWindowInteractor> interactorPoly = 
     vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  
+  vtkSmartPointer<vtkRenderWindowInteractor> interactorImage = 
+    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkSmartPointer<vtkInteractorStyleImage> style = 
+    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  interactorImage->SetInteractorStyle( style );
+
   vtkSmartPointer<vtkWindowToImageFilter> filter =
     vtkSmartPointer<vtkWindowToImageFilter>::New();
+
+  vtkSmartPointer<vtkImageMapper> imageMapper =
+    vtkSmartPointer<vtkImageMapper>::New();
+
+  vtkSmartPointer<vtkImageShiftScale> scale =
+    vtkSmartPointer<vtkImageShiftScale>::New();
 
   //vtkSmartPointer<vtkImageShiftScale> scale =
   //  vtkSmartPointer<vtkImageShiftScale>::New();
  
-  // Read .vtp file
+  // read .ply file
   fileReader->SetFileName("util/ply/environment/table.ply");
  
   // Build visualization enviroment
@@ -52,15 +65,43 @@ int main(int argc, char *argv[])
   actor->SetMapper(mapper);
   rendererPoly->AddActor(actor);
   renWinPoly->AddRenderer(rendererPoly);
-  interactor->SetRenderWindow(renWinPoly);
+  interactorPoly->SetRenderWindow(renWinPoly);
   renWinPoly->Render();
+  interactorPoly->Start();
   
-  /*
   // Create Depth Map
   filter->SetInput(renWinPoly);
   filter->SetMagnification(1);
   filter->SetInputBufferTypeToZBuffer();        //Extract z buffer value
- 
+  
+  
+
+  scale->SetOutputScalarTypeToUnsignedChar();
+  scale->SetInputConnection(filter->GetOutputPort());
+  scale->SetShift(0);
+  scale->SetScale(-255);
+
+  imageMapper->SetInputData( scale->GetOutput() );
+
+  vtkSmartPointer<vtkActor2D> imageActor = 
+    vtkSmartPointer<vtkActor2D>::New();
+
+  imageActor->SetMapper( imageMapper );
+
+  renWinImage->AddRenderer( rendererImage );
+
+  
+
+  interactorImage->SetRenderWindow( renWinImage );
+  
+  rendererImage->AddActor2D( imageActor );
+  
+  renWinImage->Render();
+  interactorImage->Start();
+
+  vtkImageData* myImage = filter->GetOutput();
+  
+  /*
   //scale->SetOutputScalarTypeToUnsignedChar();
   //scale->SetInputConnection(filter->GetOutputPort());
   //scale->SetShift(0);

@@ -1,19 +1,24 @@
 ply
 format ascii 1.0
-comment VCGLIB generated
-element vertex 4
+comment Created by Blender 2.71 (sub 0) - www.blender.org, source file: ''
+element vertex 8
 property float x
 property float y
 property float z
-property float nx
-property float ny
-property float nz
-element face 2
-property list uchar int vertex_indices
+element face 6
+property list uchar uint vertex_indices
 end_header
--5.0 0 -5.0 0 -2 0 
-5.0 0 -5.0 0 -1 0 
-5.0 -0 5.0 0 -2 0 
--5.0 -0 5.0 0 -1 0 
-3 2 1 0 
-3 3 2 0 
+-10.000000 -0.000000 -10.000000
+-10.000000 -0.050000 -10.000000
+-10.000000 -0.050000 10.000000
+-10.000000 -0.000000 10.000000
+10.000000 -0.000000 10.000000
+10.000000 -0.000000 -10.000000
+10.000000 -0.050000 10.000000
+10.000000 -0.050000 -10.000000
+4 0 1 2 3
+4 3 4 5 0
+4 4 6 7 5
+4 1 7 6 2
+4 1 0 5 7
+4 6 4 3 2

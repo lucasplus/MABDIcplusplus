@@ -152,4 +152,3 @@ foreach( MY_MEMBER ${TEST_DIRS})
 endforeach( MY_MEMBER )
 message("\n")
 
-
