@@ -14,7 +14,7 @@
 #include <QVTKWidget.h>
 
 #include <vtkPolyData.h>
-#include <vtkPLYReader.h>
+#include <vtkSTLReader.h>
 #include <vtkSmartPointer.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
@@ -35,7 +35,7 @@ class Gui : public QWidget
     Gui( QWidget *parent = 0 );
   
   private:
-    std::vector< vtkSmartPointer<vtkPLYReader> > vecReader;
+    std::vector< vtkSmartPointer<vtkSTLReader> > vecReader;
     std::vector< vtkSmartPointer<vtkPolyDataMapper> > vecMapper;
     std::vector< vtkSmartPointer<vtkActor> > vecActor;
     QTextEdit* statusText;

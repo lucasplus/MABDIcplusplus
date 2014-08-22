@@ -18,6 +18,7 @@
  
 int main(int argc, char *argv[])
 {
+  // read in ply files
   vtkSmartPointer<vtkPLYReader> fileReader = 
     vtkSmartPointer<vtkPLYReader>::New();
   
@@ -72,12 +73,12 @@ int main(int argc, char *argv[])
   // Create Depth Map
   filter->SetInput(renWinPoly);
   filter->SetMagnification(1);
-  filter->SetInputBufferTypeToZBuffer();        //Extract z buffer value
+  filter->SetInputBufferTypeToZBuffer();  // extract z buffer value
   
   
 
   scale->SetOutputScalarTypeToUnsignedChar();
-  scale->SetInputConnection(filter->GetOutputPort());
+  scale->SetInputConnection( filter->GetOutputPort() );
   scale->SetShift(0);
   scale->SetScale(-255);
 

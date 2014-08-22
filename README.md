@@ -49,9 +49,9 @@ errors and you have no idea why. Or, especially if you are new to CMake, you
 don't know how to configure a build. Also, sometimes you don't know what to
 configure. This is normal. You can do it. The key is to step back, be calm,
 perform a well thought google search, read what you feel is relevant (make sure
-not to make the mistake of trying to uderstand everything), and then try things.
+not to make the mistake of trying to understand everything), and then try things.
 That is the best thing you can do. Try different things. Don't get stuck and
-fustrated.  Keep track of your steps, and you'll be able to go back if
+frustrated.  Keep track of your steps, and you'll be able to go back if
 something really doesn't work.
 
 MABDI makes use of several third party libraries. I choose to do this for the

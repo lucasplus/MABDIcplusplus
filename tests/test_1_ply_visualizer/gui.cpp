@@ -4,34 +4,34 @@
 Gui::Gui( QWidget *parent ) : QWidget(parent)
 {
 
-  setWindowTitle( "MABDI app: ply viewer" );
+  setWindowTitle( "MABDI app: mesh viewer" );
 
-  // ___________________________________ find ply files
+  // ___________________________________ find mesh files
 
-  QDir plyDir("util/ply/environment");
-  if( !plyDir.exists() )
-    qFatal("Cannot find directory with ply files.");
+  QDir meshDir("util/stl/environment");
+  if( !meshDir.exists() )
+    qFatal("Cannot find directory with mesh files.");
 
   QStringList filters;
-  filters << "*.ply";
-  plyDir.setNameFilters( filters );
+  filters << "*.stl";
+  meshDir.setNameFilters( filters );
 
-  QFileInfoList plyFileInfoList;
-  plyFileInfoList = plyDir.entryInfoList( QDir::Files, QDir::Name );
+  QFileInfoList meshFileInfoList;
+  meshFileInfoList = meshDir.entryInfoList( QDir::Files, QDir::Name );
 
-  int nPlyFiles;
-  nPlyFiles = plyFileInfoList.size();
+  int nMeshFiles;
+  nMeshFiles = meshFileInfoList.size();
 
-  std::cout << plyFileInfoList.size() << std::endl;
-  for( int i=0; i<plyFileInfoList.size(); ++i ){
-    std::cout << plyFileInfoList[i].filePath().toStdString() << std::endl;
+  std::cout << meshFileInfoList.size() << std::endl;
+  for( int i=0; i<meshFileInfoList.size(); ++i ){
+    std::cout << meshFileInfoList[i].filePath().toStdString() << std::endl;
   }
 
   // ___________________________________ initialize widgets
 
   std::vector< QCheckBox* > vecQCheckBox;
-  for( int i=0; i<plyFileInfoList.size(); ++i ){
-    vecQCheckBox.push_back( new QCheckBox(plyFileInfoList[i].baseName().toStdString().c_str()) );
+  for( int i=0; i<meshFileInfoList.size(); ++i ){
+    vecQCheckBox.push_back( new QCheckBox(meshFileInfoList[i].baseName().toStdString().c_str()) );
   }
 
   goButton = new QPushButton( "go" );
@@ -64,10 +64,10 @@ Gui::Gui( QWidget *parent ) : QWidget(parent)
 
   // init and setup readers, mappers, actors
   double r, g, b;
-  for( int i=0; i<plyFileInfoList.size(); ++i ){
+  for( int i=0; i<meshFileInfoList.size(); ++i ){
     // vector of readers, init and setup
-    vecReader.push_back( vtkSmartPointer<vtkPLYReader>::New() );
-    vecReader[i]->SetFileName( plyFileInfoList[i].filePath().toStdString().c_str() );
+    vecReader.push_back( vtkSmartPointer<vtkSTLReader>::New() );
+    vecReader[i]->SetFileName( meshFileInfoList[i].filePath().toStdString().c_str() );
     // vector of mappers, init and setup
     vecMapper.push_back( vtkSmartPointer<vtkPolyDataMapper>::New() );
     vecMapper[i]->SetInputConnection( vecReader[i]->GetOutputPort() );

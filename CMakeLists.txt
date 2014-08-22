@@ -45,7 +45,7 @@ macro( add_new_project_common_tasks projectName )
 	endif( THIS_QT_FORMS )
 	
 	# make the project
-	add_executable( ${projectName} ${THIS_SOURCES_ALL} )
+	add_executable( ${projectName} ${THIS_SOURCES_ALL} ${BUILD_LIB_FILES} )
   
   # qt5 modules to use
   qt5_use_modules( ${projectName} ${BUILD_QT5_MODULES} )
@@ -112,6 +112,11 @@ endforeach( MY_MEMBER )
 
 # ______________________________________________ global configuring
 
+# simply glob all my library implementation files for right now
+file( GLOB BUILD_LIB_FILES /lib/ "*.cpp" "*.hpp" "*.h" )
+
+# ______________________________________________ global configuring
+
 # creating a bin directory will the executables will go
 # unfortunately when running visual studio from the IDE the working directory
 # of each project is not the same as EXECUTABLE_OUTPUT_PATH
@@ -123,6 +128,9 @@ include( ${BUILD_INCLUDE} )
 include_directories( ${BUILD_INCLUDE_DIRECTORIES} )
 link_directories( ${BUILD_LINK_DIRECTORIES} )
 
+# include path to where my interface files are to my library
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/include/ )
+
 # tell CMake to run moc when needed ( a Qt thing )
 # moc files are generated in the binary dir, tell CMake to look for includes there
 set( CMAKE_AUTOMOC ON )
@@ -131,7 +139,7 @@ set( CMAKE_INCLUDE_CURRENT_DIR ON )
 # ______________________________________________ utilities folder
 
 # create variable BUILD_UTILITIES_FOLDER containing path to my utilities folder
-set( BUILD_UTILITIES_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/src/util/ )
+set( BUILD_UTILITIES_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/util/ )
 
 # put a copy of the utilities folder in the bin folder
 # we will also have to put a copy for each project because when running
@@ -144,11 +152,11 @@ endforeach( buildConfigType )
 # ______________________________________________ adding subdirectories
 
 # the test/sandbox area
-get_sub_dir_list( TEST_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src/tests/ )
+get_sub_dir_list( TEST_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/tests/ )
 message("\n")
 foreach( MY_MEMBER ${TEST_DIRS})
   message( "  Adding test directory: " ${MY_MEMBER} )
-	add_subdirectory( src/tests${MY_MEMBER} )
+	add_subdirectory( tests${MY_MEMBER} )
 endforeach( MY_MEMBER )
 message("\n")
 
