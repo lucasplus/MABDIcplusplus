@@ -11,7 +11,7 @@
 
 ## What is this? 
 
-Repository for all development towards my final thesis code. 
+Repository for all development towards my final thesis code. Change
 
 ## Build notes  
 
