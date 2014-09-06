@@ -7,7 +7,7 @@
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkPLYReader.h>
+#include <vtkSTLReader.h>
 #include <vtkBMPWriter.h>
 #include <vtkWindowToImageFilter.h>
 #include <vtkImageShiftScale.h>
@@ -15,51 +15,51 @@
 #include <vtkImageMapper.h>
 #include <vtkActor2D.h>
 #include <vtkInteractorStyleImage.h>
+
+#include "log.h"
+#include "util.h"
+
+_INITIALIZE_EASYLOGGINGPP
  
 int main(int argc, char *argv[])
 {
-  // read in ply files
-  vtkSmartPointer<vtkPLYReader> fileReader = 
-    vtkSmartPointer<vtkPLYReader>::New();
-  
-  vtkSmartPointer<vtkPolyDataMapper> mapper = 
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
-  
-  vtkSmartPointer<vtkRenderer> rendererPoly = 
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderer> rendererImage = 
-    vtkSmartPointer<vtkRenderer>::New();
+  // logging setup
+  // LOG(INFO) and LOG(TRACE)
+  el::Configurations conf( MABDI_UTIL_LOG_CONFIG_FILE );
+  LOG(INFO) << std::endl <<"_____________________ starting";
+  el::Loggers::reconfigureAllLoggers( conf );
 
-  vtkSmartPointer<vtkRenderWindow> renWinPoly = 
-    vtkSmartPointer<vtkRenderWindow>::New();
-  vtkSmartPointer<vtkRenderWindow> renWinImage = 
-    vtkSmartPointer<vtkRenderWindow>::New();
+  // read in ply files
+
+  UTIL_VTK_INIT( vtkSTLReader             , fileReader       );
+  UTIL_VTK_INIT( vtkPolyDataMapper        , mapper           );
+  UTIL_VTK_INIT( vtkActor                 , actor            );
+  UTIL_VTK_INIT( vtkRenderer              , rendererPoly     );
+  UTIL_VTK_INIT( vtkRenderer              , rendererImage    );
+  UTIL_VTK_INIT( vtkRenderWindow          , renWinPoly       );
+  UTIL_VTK_INIT( vtkRenderWindow          , renWinImage      );
+
+  UTIL_VTK_INIT( vtkRenderWindowInteractor, interactorPoly   );
+  UTIL_VTK_INIT( vtkRenderWindowInteractor, interactorImage  );
+  UTIL_VTK_INIT( vtkInteractorStyleImage  , style            );
   
-  vtkSmartPointer<vtkRenderWindowInteractor> interactorPoly = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkRenderWindowInteractor> interactorImage = 
-    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  vtkSmartPointer<vtkInteractorStyleImage> style = 
-    vtkSmartPointer<vtkInteractorStyleImage>::New();
+  UTIL_VTK_INIT( vtkWindowToImageFilter   , filter           );
+  UTIL_VTK_INIT( vtkImageMapper           , imageMapper      );
+  UTIL_VTK_INIT( vtkImageShiftScale       , scale            );
+  
+
+
+  
+  
   interactorImage->SetInteractorStyle( style );
 
-  vtkSmartPointer<vtkWindowToImageFilter> filter =
-    vtkSmartPointer<vtkWindowToImageFilter>::New();
-
-  vtkSmartPointer<vtkImageMapper> imageMapper =
-    vtkSmartPointer<vtkImageMapper>::New();
-
-  vtkSmartPointer<vtkImageShiftScale> scale =
-    vtkSmartPointer<vtkImageShiftScale>::New();
+  
 
   //vtkSmartPointer<vtkImageShiftScale> scale =
   //  vtkSmartPointer<vtkImageShiftScale>::New();
  
   // read .ply file
-  fileReader->SetFileName("util/ply/environment/table.ply");
+  fileReader->SetFileName("util/stl/environment/table.stl");
  
   // Build visualization enviroment
   mapper->SetInputConnection( fileReader->GetOutputPort() );

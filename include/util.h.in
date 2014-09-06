@@ -1,0 +1,32 @@
+#ifndef UTIL_H
+#define UTIL_H
+
+// a quicker way to initialize a vtkSmartPointer
+#define UTIL_VTK_INIT( myClass, myObj ) \
+  vtkSmartPointer<myClass> myObj = vtkSmartPointer<myClass>::New()
+
+// to be used as a string to where the .stl files describing the environment are
+#define MABDI_UTIL_STL_ENVIRONMENT "${MABDI_UTIL_STL_ENVIRONMENT}"
+
+// to be used as a string to where the log config file is 
+#define MABDI_UTIL_LOG_CONFIG_FILE "${MABDI_UTIL_LOG_CONFIG_FILE}"
+
+/*
+#include <string>
+
+class Util
+{
+public:
+	static const std::string stlEnvironmentDir;
+	static const std::string logConfigFile;
+  
+//public:
+//  static std::string getPlyDir() { return PlyDirString; }
+	
+};
+
+const std::string Util::stlEnvironmentDir = "${MABDI_UTIL_STL_ENVIRONMENT}";
+const std::string Util::stlEnvironmentDir = "${MABDI_UTIL_LOG_CONFIG_FILE}";
+*/
+
+#endif // UTIL_H
