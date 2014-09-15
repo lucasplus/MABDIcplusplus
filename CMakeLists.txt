@@ -132,7 +132,7 @@ file( GLOB MABDI_LIB_FILES ${MABDI_FOLDER_LIB} "*.cpp" "*.hpp" "*.h" )
 # ______________________________________________ global configuring
 
 # configure utility header
-configure_file( ${MABDI_FOLDER_INCLUDE}util.h.in ${MABDI_FOLDER_INCLUDE}util.h )
+configure_file( ${MABDI_FOLDER_INCLUDE}MABDI_Util.h.in ${MABDI_FOLDER_INCLUDE}MABDI_Util.h )
 
 # creating a bin directory will the executables will go
 # unfortunately when running visual studio from the IDE the working directory
@@ -173,4 +173,5 @@ foreach( MY_MEMBER ${TEST_DIRS})
 	add_subdirectory( tests${MY_MEMBER} )
 endforeach( MY_MEMBER )
 message("\n")
+
 

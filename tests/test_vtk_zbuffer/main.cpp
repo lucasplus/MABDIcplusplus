@@ -1,14 +1,15 @@
 // This demo creates depth map for a polydata instance by extracting
 // exact ZBuffer values.
 #include <vtkSmartPointer.h>
- 
+
+#include <vtkSTLReader.h>
 #include <vtkPolyDataMapper.h>
+
 #include <vtkActor.h>
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSTLReader.h>
-#include <vtkBMPWriter.h>
+
 #include <vtkWindowToImageFilter.h>
 #include <vtkImageShiftScale.h>
 
@@ -16,20 +17,82 @@
 #include <vtkActor2D.h>
 #include <vtkInteractorStyleImage.h>
 
-#include "log.h"
-#include "util.h"
+#include <string>
+#include <vector>
 
-_INITIALIZE_EASYLOGGINGPP
+#include "MABDI_Util.h"
  
 int main(int argc, char *argv[])
 {
-  // logging setup
-  // LOG(INFO) and LOG(TRACE)
-  el::Configurations conf( MABDI_UTIL_LOG_CONFIG_FILE );
-  LOG(INFO) << std::endl <<"_____________________ starting";
-  el::Loggers::reconfigureAllLoggers( conf );
 
-  // read in ply files
+  // init vtk classes
+  UTIL_VTK_INIT( vtkSTLReader             , fileReader       );
+  UTIL_VTK_INIT( vtkPolyDataMapper        , mapper           );
+  UTIL_VTK_INIT( vtkActor                 , actor            );
+  UTIL_VTK_INIT( vtkRenderer              , renderer         );
+  UTIL_VTK_INIT( vtkRenderWindow          , renderWindow     );
+  UTIL_VTK_INIT( vtkRenderWindowInteractor, interactor       );
+  UTIL_VTK_INIT( vtkWindowToImageFilter   , filter           );
+  UTIL_VTK_INIT( vtkImageMapper           , imageMapper      );
+  UTIL_VTK_INIT( vtkActor2D               , imageActor       );
+  UTIL_VTK_INIT( vtkRenderWindow          , renderWindowImage);
+  UTIL_VTK_INIT( vtkRenderer              , rendererImage    );
+
+  // window and renderer set-up
+  renderWindow->AddRenderer( renderer );
+  renderWindowImage->AddRenderer( rendererImage );
+  interactor->SetRenderWindow( renderWindow );
+  
+  // where is the file to read in?
+  std::string tableFilePath( MABDI_Util::StlEnvironmentDir ); 
+  tableFilePath.append( "table.stl" );
+
+  // Data Pipeline [1] - read 
+  fileReader->SetFileName( tableFilePath.c_str() );
+
+  // Data Pipeline [2] - map to graphics primitive
+  mapper->SetInputConnection( fileReader->GetOutputPort() );
+
+  // Data Pipeline [3] - create an actor
+  actor->SetMapper( mapper );
+
+  // Add the actor to the renderer
+  renderer->AddActor( actor );
+
+  std::vector<double> rgb( MABDI_Util::BackgroundRGB );
+  renderer->SetBackground( rgb[0], rgb[1], rgb[2] );
+
+  renderWindow->Render();
+  interactor->Start();
+
+  filter->SetInput( renderWindow );
+  filter->SetInput(renderWindow);
+  filter->SetMagnification(2);
+  filter->Update();
+
+  // copy the output
+  vtkImageData * outputData = filter->GetOutput()->NewInstance();
+  outputData->DeepCopy(filter->GetOutput());
+
+  imageMapper->SetInputData(outputData);
+  imageMapper->SetColorWindow(255);
+  imageMapper->SetColorLevel(127.5);
+
+  imageActor->SetMapper( imageMapper );
+
+  //renWin->SetSize(320, 320);
+  //renWin->SetPosition(320,320);
+
+  rendererImage->AddActor(imageActor);
+
+  renderWindow->Render();
+  renderWindowImage->Render();
+
+  return EXIT_SUCCESS;
+}
+
+/*
+// initialize vtk classes
 
   UTIL_VTK_INIT( vtkSTLReader             , fileReader       );
   UTIL_VTK_INIT( vtkPolyDataMapper        , mapper           );
@@ -102,7 +165,7 @@ int main(int argc, char *argv[])
 
   vtkImageData* myImage = filter->GetOutput();
   
-  /*
+  
   //scale->SetOutputScalarTypeToUnsignedChar();
   //scale->SetInputConnection(filter->GetOutputPort());
   //scale->SetShift(0);
@@ -114,6 +177,5 @@ int main(int argc, char *argv[])
   imageWriter->SetFileName("hai.bmp");
   imageWriter->SetInputConnection(scale->GetOutputPort());
   imageWriter->Write();
-  */
-  return EXIT_SUCCESS;
-}
+  
+*/
