@@ -1,8 +1,6 @@
 cmake_minimum_required( VERSION 2.8.12 )
 
 # variables I'm hard coding for now
-set( VTK_DIR "C:/3rdparty/vtk_install_debug" )
-set( CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "C:/3rdparty/qt_5_3_0/5.3/msvc2012_opengl" )
 set( CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "Forcing only Debug" FORCE )
 
 # name of solution

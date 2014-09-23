@@ -16,5 +16,5 @@ archive/
 Archive/
 
 # Ignore my cmake configured util.h file
-include/util.h
+include/MABDI_Util.h
 
