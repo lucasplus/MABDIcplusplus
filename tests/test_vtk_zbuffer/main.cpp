@@ -21,11 +21,12 @@
 
 #include <vtkCamera.h>
 
+#include <vtkDirectory.h>
+
 #include <string>
 #include <vector>
 
 #include "MABDI_Util.h"
-
 
 // The callback does the work.
 // The callback keeps a pointer to the sphere whose resolution is
@@ -142,7 +143,7 @@ int main(int argc, char *argv[])
   myCallback->RenderWindowCamera = ActiveCamera;
   renderWindow->AddObserver( vtkCommand::RenderEvent, myCallback );
 
-  styleTerrain->SetAutoAdjustCameraClippingRange( 0 );
+  //styleTerrain->SetAutoAdjustCameraClippingRange( 0 );
 
   interactor->SetInteractorStyle( styleTerrain );
 
