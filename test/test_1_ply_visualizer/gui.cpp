@@ -56,15 +56,12 @@ Gui::Gui( QWidget *parent ) : QWidget(parent)
   
   // ___________________________________ reading and displaying poly data
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-    vtkSmartPointer<vtkRenderWindow>::New();
   vtkSmartPointer<vtkRenderer> renderer =
     vtkSmartPointer<vtkRenderer>::New();
-  renderWindow->AddRenderer(renderer);
 
   // init and setup readers, mappers, actors
   double r, g, b;
-  for( int i=0; i<meshFileInfoList.size(); ++i ){
+  for( int i = 0; i<meshFileInfoList.size(); ++i ){
     // vector of readers, init and setup
     vecReader.push_back( vtkSmartPointer<vtkSTLReader>::New() );
     vecReader[i]->SetFileName( meshFileInfoList[i].filePath().toStdString().c_str() );
@@ -86,8 +83,8 @@ Gui::Gui( QWidget *parent ) : QWidget(parent)
   renderer->ResetCamera();
   
   renderWindowWidget->GetRenderWindow()->AddRenderer(renderer);
-  renderWindowWidget->SetRenderWindow(renderWindow);
-  renderWindowWidget->show();
+
+  //renderWindowWidget->show();
 }
 
 

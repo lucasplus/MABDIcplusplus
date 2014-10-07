@@ -26,7 +26,9 @@
 #include <string>
 #include <vector>
 
-#include "MABDI_Util.h"
+// a quicker way to initialize a vtkSmartPointer
+#define UTIL_VTK_INIT( myClass, myObj ) \
+  vtkSmartPointer<myClass> myObj = vtkSmartPointer<myClass>::New()
 
 // The callback does the work.
 // The callback keeps a pointer to the sphere whose resolution is
@@ -82,8 +84,6 @@ int main(int argc, char *argv[])
   UTIL_VTK_INIT( vtkRenderWindowInteractor  , interactor            );
   UTIL_VTK_INIT( vtkInteractorStyleTerrain  , styleTerrain          );
 
-  //UTIL_VTK_INIT( vtkCallbackCommand         , callbackCommand       );
-
   UTIL_VTK_INIT( vtkWindowToImageFilter     , filter                );
   UTIL_VTK_INIT( vtkImageMapper             , imageMapper           );
   UTIL_VTK_INIT( vtkActor2D                 , imageActor            );
@@ -103,12 +103,8 @@ int main(int argc, char *argv[])
 
   //renderWindow->SetOffScreenRendering( 1 );
 
-  // where is the file to read in?
-  std::string tableFilePath( MABDI_Util::StlEnvironmentDir ); 
-  tableFilePath.append( "table.stl" );
-
   // Data Pipeline [1] - read 
-  fileReader->SetFileName( tableFilePath.c_str() );
+  fileReader->SetFileName( "util/stl/environment/table.stl" );
 
   // Data Pipeline [2] - map to graphics primitive
   mapper->SetInputConnection( fileReader->GetOutputPort() );
@@ -119,8 +115,7 @@ int main(int argc, char *argv[])
   // Add the actor to the renderer
   renderer->AddActor( actor );
 
-  std::vector<double> rgb( MABDI_Util::BackgroundRGB );
-  renderer->SetBackground( rgb[0], rgb[1], rgb[2] );
+  renderer->SetBackground( 238, 232, 170 );
 
   renderWindow->Render();
 
@@ -136,6 +131,8 @@ int main(int argc, char *argv[])
   rendererImage->AddActor( imageActor );
 
   ActiveCamera = renderer->GetActiveCamera();
+
+  renderer->Print( std::cout );
 
   // set up callback for when the renderwindow renders
   myCallback->FilterSource = filter;
