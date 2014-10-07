@@ -3,8 +3,6 @@
 
 #include <vtkRenderWindow.h>
 
-#include "MABDI_Util.h"
-
 #include <QDir>
 
 MabdiSimulationGui::MabdiSimulationGui(QWidget *parent) :
@@ -14,12 +12,11 @@ MabdiSimulationGui::MabdiSimulationGui(QWidget *parent) :
   ui->setupUi(this);
   
   // use settings
-  objectSetup( MABDI_Util::StlEnvironmentDir.c_str() );
+  objectSetup( "util/stl/environment/" );
 
   ui->qvtkWidgetScenarioView->GetRenderWindow()->AddRenderer( sensor.renderer );
 
-  std::vector<double> rgb( MABDI_Util::BackgroundRGB );
-  sensor.renderer->SetBackground( rgb[0], rgb[1], rgb[2] );
+  sensor.renderer->SetBackground( 238, 232, 170 );
 
   connect( ui->objectListWidget, &QListWidget::itemChanged, 
     this, &MabdiSimulationGui::objectListChanged );

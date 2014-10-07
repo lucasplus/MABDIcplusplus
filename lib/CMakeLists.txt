@@ -13,5 +13,8 @@ target_link_libraries( MABDI ${VTK_LIBRARIES} ${OPENGL_LIBRARIES} )
 # tell me what files were used in the MABDI library 
 message( "MABDI LIBRARY creating library with files:" )
 show_ls( "${MABDI_LIB_FILES}" )
-message("")
 
+message( "  CMAKE_CURRENT_SOURCE_DIR: " ${CMAKE_CURRENT_SOURCE_DIR} )
+message( "  CMAKE_CURRENT_BINARY_DIR: " ${CMAKE_CURRENT_BINARY_DIR} )
+
+message("")

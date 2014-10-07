@@ -7,3 +7,4 @@ endforeach( MY_MEMBER )
 
 # copy the utilities folder to the project folder
 file( COPY ${MABDI_FOLDER_UTILITIES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/util/ )
+

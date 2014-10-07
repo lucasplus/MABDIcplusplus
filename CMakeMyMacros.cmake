@@ -37,10 +37,10 @@ macro( add_new_executable_common_tasks THIS_TARGET THIS_DO_LINK_VTK )
 	# link to libraries
   if( ${THIS_DO_LINK_VTK} )
     message("    Linking VTK")
-    target_link_libraries( ${THIS_TARGET} ${VTK_LIBRARIES} ${OPENGL_LIBRARIES} )
+    target_link_libraries( ${THIS_TARGET} ${VTK_LIBRARIES} ${OPENGL_LIBRARIES} MABDI )
   else()
     message("    Not Linking VTK")
-    target_link_libraries( ${THIS_TARGET} ${MABDI} )
+    target_link_libraries( ${THIS_TARGET} MABDI )
   endif()
 
   message("    THIS_PROJECT_NAME: " ${THIS_TARGET} )

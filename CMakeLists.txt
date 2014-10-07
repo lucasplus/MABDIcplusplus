@@ -1,5 +1,5 @@
-cmake_minimum_required( VERSION 2.8.12 )
-
+cmake_minimum_required( VERSION 2.8.12 ) 
+ 
 # variables I'm hard coding for now
 set( CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "Forcing only Debug" FORCE )
 
@@ -53,6 +53,8 @@ include( ${VTK_USE_FILE} )
 
 # this variable is empty on WIN32, but still calling
 include_directories( ${OPENGL_INCLUDE_DIR} )
+
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/lib/ )
 
 # for qt
 set( CMAKE_AUTOMOC ON )
