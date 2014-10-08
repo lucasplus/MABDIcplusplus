@@ -1,16 +1,23 @@
-#include "MabdiSimulationGui.h"
-#include "ui_MabdiSimulationGui.h"
+#include "SimGui.h"
+#include "ui_SimGui.h"
 
 #include <vtkRenderWindow.h>
 
+#include "SimGuiSettings.h"
+
 #include <QDir>
 
-MabdiSimulationGui::MabdiSimulationGui(QWidget *parent) :
+SimGui::SimGui(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::MainWidget)
 {
   ui->setupUi(this);
   
+  configFilePath = QApplication::applicationDirPath();
+  std::cout << configFilePath.toStdString() << std::endl;
+
+  SimGuiSettings settings;
+
   // use settings
   objectSetup( "util/stl/environment/" );
 
@@ -19,13 +26,12 @@ MabdiSimulationGui::MabdiSimulationGui(QWidget *parent) :
   sensor.renderer->SetBackground( 238, 232, 170 );
 
   connect( ui->objectListWidget, &QListWidget::itemChanged, 
-    this, &MabdiSimulationGui::objectListChanged );
-
+    this, &SimGui::objectListChanged );
 }
 
-void MabdiSimulationGui::objectSetup( const char* pathToObjects )
+void SimGui::objectSetup( const char* pathToObjects )
 {
-  std::cout << "MabdiSimulationGui::objectSetup() " << std::endl;
+  std::cout << "SimGui::objectSetup() " << std::endl;
 
   // find all files in the directory pathToObjects matching "*.stl"
   QDir dir( pathToObjects );
@@ -55,9 +61,9 @@ void MabdiSimulationGui::objectSetup( const char* pathToObjects )
 
 }
 
-void MabdiSimulationGui::objectListChanged( QListWidgetItem* item )
+void SimGui::objectListChanged( QListWidgetItem* item )
 {
-  std::cout << "MabdiSimulationGui::objectListChanged(): " 
+  std::cout << "SimGui::objectListChanged(): " 
     << item->text().toStdString() << std::endl;
 
   // which row of the QListWidget?
@@ -75,7 +81,7 @@ void MabdiSimulationGui::objectListChanged( QListWidgetItem* item )
   ui->qvtkWidgetScenarioView->GetRenderWindow()->Render();
 }
 
-MabdiSimulationGui::~MabdiSimulationGui()
+SimGui::~SimGui()
 {
   delete ui;
 }

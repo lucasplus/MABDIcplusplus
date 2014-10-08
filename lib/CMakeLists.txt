@@ -1,4 +1,7 @@
 
+set( CMAKE_AUTOMOC OFF )
+set( CMAKE_INCLUDE_CURRENT_DIR OFF )
+
 # grab all Mabdi library files
 file( GLOB MABDI_LIB_FILES "*.cpp" "*.hpp" "*.h" )
 
@@ -16,5 +19,7 @@ show_ls( "${MABDI_LIB_FILES}" )
 
 message( "  CMAKE_CURRENT_SOURCE_DIR: " ${CMAKE_CURRENT_SOURCE_DIR} )
 message( "  CMAKE_CURRENT_BINARY_DIR: " ${CMAKE_CURRENT_BINARY_DIR} )
-
 message("")
+
+set( CMAKE_AUTOMOC ON )
+set( CMAKE_INCLUDE_CURRENT_DIR ON )

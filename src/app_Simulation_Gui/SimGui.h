@@ -1,5 +1,5 @@
-#ifndef MABDISIMULATIONGUI_H
-#define MABDISIMULATIONGUI_H
+#ifndef SIMGUI_H
+#define SIMGUI_H
 
 #include <QWidget>
 
@@ -11,13 +11,13 @@ namespace Ui {
   class MainWidget;
 }
  
-class MabdiSimulationGui : public QWidget
+class SimGui : public QWidget
 {
   Q_OBJECT
  
 public:
-  MabdiSimulationGui( QWidget *parent = 0 );
-  ~MabdiSimulationGui();
+  SimGui( QWidget *parent = 0 );
+  ~SimGui();
   
 private slots:
   void objectListChanged( QListWidgetItem* );
@@ -28,7 +28,9 @@ private:
 
   Ui::MainWidget *ui;
 
+  QString configFilePath;
+
   void objectSetup( const char* );
 };
 
-#endif // MABDISIMULATIONGUI_H
+#endif // SIMGUI_H

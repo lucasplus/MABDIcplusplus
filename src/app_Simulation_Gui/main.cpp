@@ -1,12 +1,13 @@
+#include <iostream>
 #include <QApplication>
-#include "MabdiSimulationGui.h"
+#include "SimGui.h"
 
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
 
-  MabdiSimulationGui mabdiSimulationGui;
-  mabdiSimulationGui.show();
+  SimGui simGui;
+  simGui.show();
 
   return app.exec();
 }
