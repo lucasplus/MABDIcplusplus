@@ -20,7 +20,7 @@ set( MABDI_QT5_MODULES Core Widgets Gui )
 # ______________________________________________ project wide configurations
 
 if( NOT MSVC )
-  message("Compiler is gcc or g++ variant. Telling compiler to use C++11")
+  message("Compiler is not Microsoft Visual Studio. Telling compiler to use C++11. \n")
   list( APPEND CMAKE_CXX_FLAGS "-std=c++0x")
 endif()
 

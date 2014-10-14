@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QFileInfo>
 
+#include <QList>
 #include <QColor>
 
 
@@ -24,11 +25,15 @@ SimGuiSettings::SimGuiSettings()
     + "/" + appName + "_config.ini";
   std::cout << "Config file: " << configFilePath.toStdString() << std::endl;
   
+  qRegisterMetaType< QList<QColor> >("QList<QColor>");
+  qRegisterMetaTypeStreamOperators< QList<QColor> >("QList<QColor>");
+
   settings = new QSettings( configFilePath, QSettings::IniFormat );
 
   // mapping SimGuiSettings enum to the key actually used by QSettings
   keyMap[Key::EnvironmentDir]              = "environment/directory";
   keyMap[Key::ScenarioViewBackgroundColor] = "scenario/view/background_color";
+  keyMap[Key::ObjectColor]                 = "environment/object_color";
 
   writeDefaults();
 

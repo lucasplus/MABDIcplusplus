@@ -14,6 +14,8 @@ SimGui::SimGui(QWidget *parent) :
 {
   std::cout << "SimGui::SimGui()" << std::endl;
   
+  
+
   ui->setupUi(this);
 
   // set up the environment (add objects and set colors)
