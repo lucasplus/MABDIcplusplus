@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>1444</width>
-    <height>612</height>
+    <height>624</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MABDI Simulation Gui</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="sizeConstraint">
@@ -22,7 +22,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QGroupBox" name="groupBox_3">
+        <widget class="QGroupBox" name="objectGroupBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -37,7 +37,7 @@
            <widget class="QListWidget" name="objectListWidget"/>
           </item>
           <item>
-           <widget class="QSlider" name="horizontalSlider_3">
+           <widget class="QSlider" name="objectOpacitySlider">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -53,16 +53,16 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="sensorPathGroupBox">
          <property name="title">
           <string>Sensor Path</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
-           <widget class="QListWidget" name="listWidget_2"/>
+           <widget class="QListWidget" name="sensorPathListWidget"/>
           </item>
           <item>
-           <widget class="QSlider" name="horizontalSlider_2">
+           <widget class="QSlider" name="sensorPathSlider">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -78,13 +78,13 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_2">
+        <widget class="QGroupBox" name="scenarioViewGroupBox">
          <property name="title">
           <string>Scenario View</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
-           <widget class="QRadioButton" name="radioButton">
+           <widget class="QRadioButton" name="scenarioViewShowPointCloud">
             <property name="text">
              <string>Show Point Cloud</string>
             </property>
@@ -111,7 +111,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QVTKWidget" name="qvtkWidgetScenarioView">
+        <widget class="QVTKWidget" name="scenarioViewVTKWindow">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -133,7 +133,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="scenarioViewVTKWindowLabel">
          <property name="text">
           <string>Scenario View</string>
          </property>
@@ -147,7 +147,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QVTKWidget" name="qvtkWidgetDepthImage">
+        <widget class="QVTKWidget" name="enlargedViewVTKWindow">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -169,7 +169,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="enlargedViewVTKWindowLabel">
          <property name="text">
           <string>Depth Image</string>
          </property>
@@ -181,6 +181,19 @@
       </layout>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="viewArrayGroupBox">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Available Views</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

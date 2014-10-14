@@ -37,17 +37,7 @@ void MabdiSimulatedSensor::setObjectVisibility( int row, bool showObject ){
   std::cout << "MabdiSimulatedSensor::setObjectVisibility(): " << 
     "row number " << row << std::endl;
 
-  // get the actors from the renderer
-  // use a vtkWeakPointer because the renderer is the owner
-  vtkWeakPointer<vtkActorCollection> actorCollection = renderer->GetActors();  
-  
-  // get the actor corresponding to the given row
-  vtkWeakPointer<vtkActor> actor;
-  actorCollection->InitTraversal();
-  for( int i=0; i<=row; ++i ){
-    std::cout << "i = " << i << std::endl;
-    actor = actorCollection->GetNextActor();
-  }
+  vtkWeakPointer<vtkActor> actor = getActor( row );
   
   // show or hide object
   if( showObject )
@@ -60,6 +50,12 @@ void MabdiSimulatedSensor::setObjectColor( int row, int r, int g, int b ){
   std::cout << "MabdiSimulatedSensor::setObjectColor(): " << 
     "row number " << row << std::endl;
 
+  vtkWeakPointer<vtkActor> actor = getActor( row );
+  
+  actor->GetProperty()->SetColor( r, g, b );
+}
+
+vtkActor* MabdiSimulatedSensor::getActor( int row ){
   // get the actors from the renderer
   // use a vtkWeakPointer because the renderer is the owner
   vtkWeakPointer<vtkActorCollection> actorCollection = renderer->GetActors();  
@@ -71,7 +67,6 @@ void MabdiSimulatedSensor::setObjectColor( int row, int r, int g, int b ){
     std::cout << "i = " << i << std::endl;
     actor = actorCollection->GetNextActor();
   }
-  
-  actor->GetProperty()->SetColor( r, g, b );
 
+  return actor;
 }

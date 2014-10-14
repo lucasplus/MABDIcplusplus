@@ -6,6 +6,7 @@
 #include <vtkPolyDataMapper.h>
 
 #include <vtkActor.h>
+#include <vtkProperty.h>
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
@@ -111,7 +112,9 @@ int main(int argc, char *argv[])
 
   // Data Pipeline [3] - create an actor
   actor->SetMapper( mapper );
-
+  actor->GetProperty()->SetColor( 255, 0, 0 );
+  // actor->GetProperty()->SetOpacity( 0.7 ); // screws up when getting depth
+  
   // Add the actor to the renderer
   renderer->AddActor( actor );
 

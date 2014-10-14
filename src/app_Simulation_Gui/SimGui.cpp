@@ -6,6 +6,7 @@
 #include "SimGuiSettings.h"
 
 #include <QDir>
+#include <QVariant>
 
 SimGui::SimGui(QWidget *parent) :
   QWidget(parent),
@@ -15,7 +16,7 @@ SimGui::SimGui(QWidget *parent) :
   
   ui->setupUi(this);
 
-  // use settings
+  // set up the environment (add objects and set colors)
   environmentSetup();
 
   ui->qvtkWidgetScenarioView->GetRenderWindow()->AddRenderer( sensor.renderer );
@@ -27,6 +28,9 @@ SimGui::SimGui(QWidget *parent) :
 void SimGui::environmentSetup()
 {
   std::cout << "SimGui::objectSetup() " << std::endl;
+
+  // TODO: to make it so that the user can select a new environment while app is running:
+  //    - need a clear method in both SimGuiSettings and MabdiSimulatedSensor
 
   QColor c;
 
@@ -65,7 +69,14 @@ void SimGui::environmentSetup()
   c = QColor( Qt::GlobalColor::blue );
   for(int i=0; i<dirFileInfoList.size(); ++i){
     sensor.setObjectColor( i, c.red(), c.green(), c.blue() );
+    objectColorList.append( c );
   }
+
+  // here we are saving the QList with QColor of each object into the config file
+  // using the ObjectColor key. See SimGuiSettings
+  QVariant v;
+  v.setValue( objectColorList );
+  settings.setSetting( SimGuiSettings::Key::ObjectColor, v );
 
   // background color
   c = settings.getSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor ).value<QColor>();

@@ -3,12 +3,10 @@
 
 #include <vtkSmartPointer.h>
 
+#include <vtkActor.h>
 #include <vtkActorCollection.h>
-#include <vtkMapperCollection.h>
 
 #include <vtkRenderer.h>
-
-#include <string>
 
 //#include "MABDI_Util.h"
 
@@ -35,8 +33,9 @@ public:
   void setObjectVisibility( int row, bool showObject );
   void setObjectColor( int row, int r, int g, int b );
   vtkSmartPointer<vtkRenderer> renderer;
+
 private:
-  
+  vtkActor* getActor( int row );  
 };
 
 #endif // MABDISIMULATEDSENSOR_H
