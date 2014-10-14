@@ -17,6 +17,13 @@ set( MABDI_UTIL_STL_ENVIRONMENT ${MABDI_FOLDER_UTILITIES}stl/environment/ )
 # the qt5 widgets we need 
 set( MABDI_QT5_MODULES Core Widgets Gui )
 
+# ______________________________________________ project wide configurations
+
+if( CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_ISGNUCXX )
+  message("Compiler is gcc or g++ variant. Telling compiler to use C++11")
+  list( APPEND CMAKE_CXX_FLAGS "-std=c++0x")
+endif()
+
 # ______________________________________________ define macros
 
 include( CMakeMyMacros.cmake )
