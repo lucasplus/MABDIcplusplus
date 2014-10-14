@@ -19,7 +19,7 @@ SimGui::SimGui(QWidget *parent) :
   // set up the environment (add objects and set colors)
   environmentSetup();
 
-  ui->qvtkWidgetScenarioView->GetRenderWindow()->AddRenderer( sensor.renderer );
+  ui->scenarioViewVTKWindow->GetRenderWindow()->AddRenderer( sensor.renderer );
 
   connect( ui->objectListWidget, &QListWidget::itemChanged, 
     this, &SimGui::objectListChanged );
@@ -100,7 +100,7 @@ void SimGui::objectListChanged( QListWidgetItem* item )
     sensor.setObjectVisibility( row, false );
 
   // have to rerender to show changes
-  ui->qvtkWidgetScenarioView->GetRenderWindow()->Render();
+  ui->scenarioViewVTKWindow->GetRenderWindow()->Render();
 }
 
 SimGui::~SimGui()
