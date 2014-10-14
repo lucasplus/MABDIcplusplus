@@ -11,30 +11,29 @@ SimGui::SimGui(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::MainWidget)
 {
-  ui->setupUi(this);
+  std::cout << "SimGui::SimGui()" << std::endl;
   
-  configFilePath = QApplication::applicationDirPath();
-  std::cout << configFilePath.toStdString() << std::endl;
-
-  SimGuiSettings settings;
+  ui->setupUi(this);
 
   // use settings
-  objectSetup( "util/stl/environment/" );
+  environmentSetup();
 
   ui->qvtkWidgetScenarioView->GetRenderWindow()->AddRenderer( sensor.renderer );
-
-  sensor.renderer->SetBackground( 238, 232, 170 );
 
   connect( ui->objectListWidget, &QListWidget::itemChanged, 
     this, &SimGui::objectListChanged );
 }
 
-void SimGui::objectSetup( const char* pathToObjects )
+void SimGui::environmentSetup()
 {
   std::cout << "SimGui::objectSetup() " << std::endl;
 
+  QColor c;
+
+  QString pathToEnvironment = settings.getSetting( SimGuiSettings::Key::EnvironmentDir ).toString();
+
   // find all files in the directory pathToObjects matching "*.stl"
-  QDir dir( pathToObjects );
+  QDir dir( pathToEnvironment );
   if( !dir.exists() )
     qFatal("Cannot find directory with mesh files.");
   QStringList filter;
@@ -44,7 +43,7 @@ void SimGui::objectSetup( const char* pathToObjects )
   dirFileInfoList = dir.entryInfoList( QDir::Files, QDir::Name );
   
   // add the objects to both the gui and MabdiSimulatedSensor
-  for(int i=0; i < dirFileInfoList.size(); ++i){
+  for(int i=0; i<dirFileInfoList.size(); ++i){
     // take out underscore and replace with space
     QString baseName = dirFileInfoList[i].baseName();
     baseName.replace("_"," ");
@@ -58,7 +57,19 @@ void SimGui::objectSetup( const char* pathToObjects )
     // add to MabdiSimulatedSensor object
     sensor.addObject( dirFileInfoList[i].filePath().toStdString().c_str() );
   }
+  
+  // It's ugly but I am making a 2nd for loop to set the default colors of the objects
+  // Have to do this because of the way I index through the objects in MabdiSimulatedSensor
+  // I should also be setting defaults in SimGuiSettings but I would need to know the number of objects
+  QList<QColor> objectColorList;
+  c = QColor( Qt::GlobalColor::blue );
+  for(int i=0; i<dirFileInfoList.size(); ++i){
+    sensor.setObjectColor( i, c.red(), c.green(), c.blue() );
+  }
 
+  // background color
+  c = settings.getSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor ).value<QColor>();
+  sensor.renderer->SetBackground( c.red(), c.green(), c.blue() );
 }
 
 void SimGui::objectListChanged( QListWidgetItem* item )
@@ -73,9 +84,9 @@ void SimGui::objectListChanged( QListWidgetItem* item )
   // set visible or hide
   Qt::CheckState state = item->checkState();
   if( state==Qt::CheckState::Checked )
-    sensor.showObject( row, true );
+    sensor.setObjectVisibility( row, true );
   else
-    sensor.showObject( row, false );
+    sensor.setObjectVisibility( row, false );
 
   // have to rerender to show changes
   ui->qvtkWidgetScenarioView->GetRenderWindow()->Render();

@@ -32,7 +32,8 @@ class MabdiSimulatedSensor
 public:
   MabdiSimulatedSensor ();
   void addObject( const char* );
-  void showObject( int row, bool showObject );
+  void setObjectVisibility( int row, bool showObject );
+  void setObjectColor( int row, int r, int g, int b );
   vtkSmartPointer<vtkRenderer> renderer;
 private:
   

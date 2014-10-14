@@ -5,6 +5,8 @@
 
 #include <QListWidgetItem>
 
+#include "SimGuiSettings.h"
+
 #include "MabdiSimulatedSensor.h"
 
 namespace Ui {
@@ -23,14 +25,12 @@ private slots:
   void objectListChanged( QListWidgetItem* );
 
 private:
-  std::vector<QListWidgetItem*> objects;
-  MabdiSimulatedSensor sensor;
-
   Ui::MainWidget *ui;
-
-  QString configFilePath;
-
-  void objectSetup( const char* );
+  SimGuiSettings settings;
+  
+  MabdiSimulatedSensor sensor;
+  
+  void environmentSetup();
 };
 
 #endif // SIMGUI_H
