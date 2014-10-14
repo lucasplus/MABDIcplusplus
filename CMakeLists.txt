@@ -19,7 +19,7 @@ set( MABDI_QT5_MODULES Core Widgets Gui )
 
 # ______________________________________________ project wide configurations
 
-if( CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_ISGNUCXX )
+if( CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX )
   message("Compiler is gcc or g++ variant. Telling compiler to use C++11")
   list( APPEND CMAKE_CXX_FLAGS "-std=c++0x")
 endif()
