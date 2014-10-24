@@ -5,6 +5,8 @@
 
 #include <QListWidgetItem>
 
+#include <QActionGroup>
+
 #include "SimGuiSettings.h"
 
 #include "MabdiSimulatedSensor.h"
@@ -23,11 +25,13 @@ public:
   
 private slots:
   void objectListChanged( QListWidgetItem* );
+  void changeObjectColor();
 
 private:
   Ui::MainWidget *ui;
   SimGuiSettings settings;
-  
+  //QActionGroup objectContextMenu;
+
   MabdiSimulatedSensor sensor;
   
   void environmentSetup();

@@ -25,6 +25,7 @@ SimGuiSettings::SimGuiSettings()
     + "/" + appName + "_config.ini";
   std::cout << "Config file: " << configFilePath.toStdString() << std::endl;
   
+  // have to register types unkown to QtCore (its a QVariant thing)
   qRegisterMetaType< QList<QColor> >("QList<QColor>");
   qRegisterMetaTypeStreamOperators< QList<QColor> >("QList<QColor>");
 

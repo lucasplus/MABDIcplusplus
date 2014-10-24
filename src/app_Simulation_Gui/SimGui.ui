@@ -34,7 +34,11 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
-           <widget class="QListWidget" name="objectListWidget"/>
+           <widget class="QListWidget" name="objectListWidget">
+            <property name="contextMenuPolicy">
+             <enum>Qt::ActionsContextMenu</enum>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QSlider" name="objectOpacitySlider">

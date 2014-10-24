@@ -7,14 +7,14 @@
 
 #include <QDir>
 #include <QVariant>
+#include <QList>
+#include <QAction>
 
 SimGui::SimGui(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::MainWidget)
 {
   std::cout << "SimGui::SimGui()" << std::endl;
-  
-  
 
   ui->setupUi(this);
 
@@ -30,11 +30,11 @@ SimGui::SimGui(QWidget *parent) :
 void SimGui::environmentSetup()
 {
   std::cout << "SimGui::objectSetup() " << std::endl;
-
+  
+  QColor c;
+  
   // TODO: to make it so that the user can select a new environment while app is running:
   //    - need a clear method in both SimGuiSettings and MabdiSimulatedSensor
-
-  QColor c;
 
   QString pathToEnvironment = settings.getSetting( SimGuiSettings::Key::EnvironmentDir ).toString();
 
@@ -49,9 +49,12 @@ void SimGui::environmentSetup()
   dirFileInfoList = dir.entryInfoList( QDir::Files, QDir::Name );
   
   // add the objects to both the gui and MabdiSimulatedSensor
+  QString baseName;
+  QString contextMenuTitle;
+  QAction *action;
   for(int i=0; i<dirFileInfoList.size(); ++i){
     // take out underscore and replace with space
-    QString baseName = dirFileInfoList[i].baseName();
+    baseName = dirFileInfoList[i].baseName();
     baseName.replace("_"," ");
 
     // add to QListWidget and set checkable 
@@ -60,6 +63,18 @@ void SimGui::environmentSetup()
     item->setFlags( Qt::ItemIsUserCheckable | Qt::ItemIsEnabled );
     item->setCheckState( Qt::CheckState::Checked );
 
+    // add actions to the context menu of 
+    // these actions will allow the user to change the color of the objects
+    contextMenuTitle = "Change color: " + baseName;
+    action = new QAction( contextMenuTitle, parentWidget() );
+    action->setObjectName( baseName );
+
+    // add to the QListWidget
+    ui->objectListWidget->addAction( action );
+
+    // connect signal
+    connect( action, &QAction::triggered, this, &SimGui::changeObjectColor );
+    
     // add to MabdiSimulatedSensor object
     sensor.addObject( dirFileInfoList[i].filePath().toStdString().c_str() );
   }
@@ -83,6 +98,21 @@ void SimGui::environmentSetup()
   // background color
   c = settings.getSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor ).value<QColor>();
   sensor.renderer->SetBackground( c.red(), c.green(), c.blue() );
+
+  // context menu item to change the color of the background
+  action = new QAction( "Change color: background", parentWidget() );
+  ui->objectListWidget->addAction( action );
+  connect( action, &QAction::triggered, this, &SimGui::changeObjectColor );
+}
+
+void SimGui::changeObjectColor(){
+  std::cout << "SimGui::changeObjectColor()" << std::endl;
+
+  // get which action sent the signal and it
+  QAction* thisAction = qobject_cast<QAction*>( sender() );
+
+  std::cout << thisAction->objectName().toStdString() << std::endl;
+
 }
 
 void SimGui::objectListChanged( QListWidgetItem* item )
