@@ -1,17 +1,17 @@
-# AllProjects 
+# MABDI  (Mesh Addition Based on the Depth Image)
 
 ## On this page:
 
-  * [What is this?](#what-is-this)
+  * [What is this?](#what-is-MABDI)
   * [Build Notes](#build-notes)
     * [Third party libraries](#third-party-libraries)
     * [Installing third party libraries on Windows](#installing-third-party-libraries-on-windows)
     * [Additional build notes](#additional-build-notes)
   * [Notes](#notes)
 
-## What is this? 
+## What is MABDI? 
 
-Repository for all development towards my final thesis code. Change
+The end goal of MABDI is to be a software tool used for robotic applications, specifically environmental mapping. The current state-of-the-art algorithms that build a mesh map of the environment have an open-loop design that build mesh by simply by using using all of the available measurements from the senor, building a mesh, and then sequentially adding the mesh to a larger, global mesh. There are of course notable exceptions (reference Kinect Fusion and Kintinous) with their own separate cons. The main goal and idea of MABDI is to create a simple mechanism to first categorize the incoming measurements based on if they should be used to add to the global map of the environment. Essentially, closing the loop of the existing mapping algorithms and providing the system with a sense of introspection. My claim is that this will build maps that are more efficient (smaller) and require less computation to build. 
 
 ## Build notes  
 
@@ -157,4 +157,6 @@ required me to switch to Qt 4.
 My memory is poor and if I don't write down all the ideas and facts swimming in
 my head it bogs down the main process a terrible amount. Result: many text
 files with a bunch of simple notes. Here is one for MABDI.
+
+
 
