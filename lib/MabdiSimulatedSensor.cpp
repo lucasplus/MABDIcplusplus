@@ -28,6 +28,11 @@ void MabdiSimulatedSensor::addObject( const char* newObjectPath ){
   reader->SetFileName( newObjectPath );
   polyMapper->SetInputConnection( reader->GetOutputPort() );
   polyMapper->Update();
+  
+  //renderer->Print( std::cout );
+
+  std::cout << "polymapper ScalarVisibility: " << polyMapper->GetScalarVisibility() << std::endl;
+  
   actor->SetMapper( polyMapper.GetPointer() );
   
   renderer->AddActor( actor.GetPointer() );
@@ -46,13 +51,17 @@ void MabdiSimulatedSensor::setObjectVisibility( int row, bool showObject ){
     actor->SetVisibility( 0 );
 }
 
-void MabdiSimulatedSensor::setObjectColor( int row, int r, int g, int b ){
+void MabdiSimulatedSensor::setObjectColor( int row, double r, double g, double b ){
   std::cout << "MabdiSimulatedSensor::setObjectColor(): " << 
     "row number " << row << std::endl;
 
   vtkWeakPointer<vtkActor> actor = getActor( row );
   
+  std::cout << "color: " << r << " " << g << " " << b << " " << std::endl; 
+
   actor->GetProperty()->SetColor( r, g, b );
+
+  //renderer->Print( std::cout );
 }
 
 vtkActor* MabdiSimulatedSensor::getActor( int row ){

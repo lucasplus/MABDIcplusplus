@@ -5,6 +5,9 @@
 #include <QApplication>
 #include <QFileInfo>
 
+#include <QDir>
+#include <QStringList>
+
 #include <QList>
 #include <QColor>
 
@@ -51,6 +54,11 @@ void SimGuiSettings::writeDefaults()
   if( !settings->contains( thisQKey ) ){
     QString thisDefault = "util/stl/environment/";
     settings->setValue( thisQKey, thisDefault );
+    getDirectoryInfo();
+    writeObjectColorDefault();
+  }
+  else{
+    getDirectoryInfo();
   }
 
   // scenario background color
@@ -59,6 +67,52 @@ void SimGuiSettings::writeDefaults()
     QColor thisDefault =  QColor( Qt::GlobalColor::lightGray );
     settings->setValue( thisQKey, thisDefault );
   }
+}
+
+void SimGuiSettings::writeObjectColorDefault()
+{
+  QList<QColor> objectColorList;
+  QColor c = QColor( Qt::GlobalColor::blue );
+  for(auto i : objectFilePath){
+    objectColorList << c;
+  }
+}
+
+void SimGuiSettings::getDirectoryInfo()
+{
+  QString pathToEnvironment = getSetting( Key::EnvironmentDir ).toString();
+  
+  // find all files in the directory pathToObjects matching "*.stl"
+  QDir dir( pathToEnvironment );
+  if( !dir.exists() )
+    qFatal("Cannot find directory with mesh files.");
+  QStringList filter;
+  filter << "*.stl";
+  dir.setNameFilters( filter );
+  QFileInfoList dirFileInfoList;
+  dirFileInfoList = dir.entryInfoList( QDir::Files, QDir::Name );
+
+  // save the base name and the file path of the object
+  QString baseName;
+  objectBaseName.clear();
+  objectFilePath.clear();
+  for(auto file : dirFileInfoList){
+    baseName = file.baseName();
+    baseName.replace("_"," ");
+    objectBaseName << baseName;
+    objectFilePath << file.filePath();
+  }
+
+}
+
+QList<QString> SimGuiSettings::getObjectBaseName()
+{
+  return objectBaseName;
+}
+
+QList<QString> SimGuiSettings::getObjectFilePath()
+{
+  return objectFilePath;
 }
 
 QVariant SimGuiSettings::getSetting( SimGuiSettings::Key inKey )
@@ -71,6 +125,11 @@ void SimGuiSettings::setSetting( SimGuiSettings::Key inKey, QVariant inVariant )
 {
   QString thisQKey = keyMap[inKey];
   settings->setValue( thisQKey, inVariant );
+
+  if (inKey == Key::EnvironmentDir ){
+    getDirectoryInfo();
+    writeObjectColorDefault();
+  }
 }
 
 SimGuiSettings::~SimGuiSettings()

@@ -8,8 +8,6 @@
 
 #include <vtkRenderer.h>
 
-//#include "MABDI_Util.h"
-
 /*
 
 This is meant to class is meant to simulate a kinect sensor
@@ -28,10 +26,10 @@ Maybe just hand out a pointer to the camera?
 class MabdiSimulatedSensor
 {
 public:
-  MabdiSimulatedSensor ();
+  MabdiSimulatedSensor();
   void addObject( const char* );
   void setObjectVisibility( int row, bool showObject );
-  void setObjectColor( int row, int r, int g, int b );
+  void setObjectColor( int row, double r, double g, double b );
   vtkSmartPointer<vtkRenderer> renderer;
 
 private:

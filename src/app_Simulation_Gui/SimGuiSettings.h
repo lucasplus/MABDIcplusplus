@@ -33,13 +33,24 @@ public:
   };
 
   QVariant getSetting( Key );
+  
+  // if the previous value already exists, it will be overwritten
   void setSetting( Key, QVariant );
   
+  QList<QString> getObjectBaseName();
+  QList<QString> getObjectFilePath();
+
 private:
   QSettings *settings;
   QMap<Key, QString> keyMap;
 
+  QList<QString> objectBaseName;
+  QList<QString> objectFilePath;
+
+
   void writeDefaults();
+  void writeObjectColorDefault();
+  void getDirectoryInfo();
 };
 
 #endif // SIMGUISETTINGS_H

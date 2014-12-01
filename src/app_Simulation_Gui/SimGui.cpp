@@ -5,10 +5,14 @@
 
 #include "SimGuiSettings.h"
 
-#include <QDir>
-#include <QVariant>
 #include <QList>
+#include <QString>
+
+#include <QVariant>
+
 #include <QAction>
+
+#include <QColorDialog>
 
 SimGui::SimGui(QWidget *parent) :
   QWidget(parent),
@@ -27,91 +31,129 @@ SimGui::SimGui(QWidget *parent) :
     this, &SimGui::objectListChanged );
 }
 
+
+// call when the user changes directory where *.stl files are saved
 void SimGui::environmentSetup()
 {
-  std::cout << "SimGui::objectSetup() " << std::endl;
-  
-  QColor c;
-  
-  // TODO: to make it so that the user can select a new environment while app is running:
-  //    - need a clear method in both SimGuiSettings and MabdiSimulatedSensor
+  std::cout << "SimGui::environmentSetup() " << std::endl;
 
-  QString pathToEnvironment = settings.getSetting( SimGuiSettings::Key::EnvironmentDir ).toString();
+  // get name and file path for each object
+  QList<QString> objectBaseName = settings.getObjectBaseName();
+  QList<QString> objectFilePath = settings.getObjectFilePath();
 
-  // find all files in the directory pathToObjects matching "*.stl"
-  QDir dir( pathToEnvironment );
-  if( !dir.exists() )
-    qFatal("Cannot find directory with mesh files.");
-  QStringList filter;
-  filter << "*.stl";
-  dir.setNameFilters( filter );
-  QFileInfoList dirFileInfoList;
-  dirFileInfoList = dir.entryInfoList( QDir::Files, QDir::Name );
-  
-  // add the objects to both the gui and MabdiSimulatedSensor
-  QString baseName;
-  QString contextMenuTitle;
-  QAction *action;
-  for(int i=0; i<dirFileInfoList.size(); ++i){
-    // take out underscore and replace with space
-    baseName = dirFileInfoList[i].baseName();
-    baseName.replace("_"," ");
+  //
+  // QListWidgetItem - for toggling objects on and off
+  //
 
-    // add to QListWidget and set checkable 
-    ui->objectListWidget->addItem( baseName );
-    QListWidgetItem* item = ui->objectListWidget->item( i );
+  // clear and then add items to the object list 
+  ui->objectListWidget->clear();
+  ui->objectListWidget->addItems( QStringList(objectBaseName) );
+
+  // make all items in the list checkable
+  QList<QListWidgetItem*> itemList 
+    = ui->objectListWidget->findItems(QString("*"), Qt::MatchWrap | Qt::MatchWildcard);
+  for( auto item : itemList ){
     item->setFlags( Qt::ItemIsUserCheckable | Qt::ItemIsEnabled );
     item->setCheckState( Qt::CheckState::Checked );
+  }
 
-    // add actions to the context menu of 
-    // these actions will allow the user to change the color of the objects
+  //
+  // QAction - for changing object color
+  //
+
+  QList<QAction*> actionList = ui->objectListWidget->actions();
+  for( auto action : actionList ){
+    ui->objectListWidget->removeAction( action );
+  }
+
+  QString contextMenuTitle;
+  QAction *action;
+  for( auto baseName : objectBaseName ){
     contextMenuTitle = "Change color: " + baseName;
-    action = new QAction( contextMenuTitle, parentWidget() );
+    action = new QAction( contextMenuTitle, this );
     action->setObjectName( baseName );
-
-    // add to the QListWidget
     ui->objectListWidget->addAction( action );
-
-    // connect signal
     connect( action, &QAction::triggered, this, &SimGui::changeObjectColor );
-    
-    // add to MabdiSimulatedSensor object
-    sensor.addObject( dirFileInfoList[i].filePath().toStdString().c_str() );
   }
-  
-  // It's ugly but I am making a 2nd for loop to set the default colors of the objects
-  // Have to do this because of the way I index through the objects in MabdiSimulatedSensor
-  // I should also be setting defaults in SimGuiSettings but I would need to know the number of objects
-  QList<QColor> objectColorList;
-  c = QColor( Qt::GlobalColor::blue );
-  for(int i=0; i<dirFileInfoList.size(); ++i){
-    sensor.setObjectColor( i, c.red(), c.green(), c.blue() );
-    objectColorList.append( c );
-  }
-
-  // here we are saving the QList with QColor of each object into the config file
-  // using the ObjectColor key. See SimGuiSettings
-  QVariant v;
-  v.setValue( objectColorList );
-  settings.setSetting( SimGuiSettings::Key::ObjectColor, v );
-
-  // background color
-  c = settings.getSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor ).value<QColor>();
-  sensor.renderer->SetBackground( c.red(), c.green(), c.blue() );
 
   // context menu item to change the color of the background
-  action = new QAction( "Change color: background", parentWidget() );
+  action = new QAction( "Change color: background", this );
+  action->setObjectName( "background" );
   ui->objectListWidget->addAction( action );
   connect( action, &QAction::triggered, this, &SimGui::changeObjectColor );
+
+  //
+  // MabdiSimulatedSensor - add object to the simulated sensor and set color
+  //
+
+  for(auto filePath : objectFilePath ){
+    sensor.addObject( filePath.toStdString().c_str() );
+  }
+
+  QList<QColor> objectColorList 
+    = settings.getSetting( SimGuiSettings::Key::ObjectColor ).value< QList<QColor> >();
+  int count = 0;
+  for( auto c : objectColorList ){
+    sensor.setObjectColor( count, c.redF(), c.greenF(), c.blueF() );
+    count++;
+  }
+
+  // background color
+  QColor c = settings.getSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor ).value<QColor>();
+  sensor.renderer->SetBackground( c.redF(), c.greenF(), c.blueF() );
 }
 
 void SimGui::changeObjectColor(){
   std::cout << "SimGui::changeObjectColor()" << std::endl;
 
-  // get which action sent the signal and it
+  // get which action sent the signal and its objectName
   QAction* thisAction = qobject_cast<QAction*>( sender() );
 
-  std::cout << thisAction->objectName().toStdString() << std::endl;
+  // is it the background?
+  if( QString("background") == thisAction->objectName() ){
+    QColor oldColor = 
+      settings.getSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor ).value< QColor >();
+    QColor c = QColorDialog::getColor( oldColor );
+    if ( !c.isValid() ) { 
+      return;
+    }
+    QVariant v;
+    v.setValue( c );
+    settings.setSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor, v );
+    return;
+  }
+  
+
+  // list of all objects
+  QList<QString> objectBaseName = settings.getObjectBaseName();
+
+  // cycle through list, find index of object (by matching name)
+  int objectIndex = 0; 
+  for( auto i : objectBaseName ){
+    std::cout << "i is: " << i.toStdString() << std::endl;
+    if ( i == thisAction->objectName() ) {
+      objectIndex = objectBaseName.indexOf( i );
+    }
+  }
+
+  // get the old color list from the settings and change it for the new color
+  // unless the color choosen was invalid (user probably cancelled the QColorDialog)
+  QList<QColor> objectColorList 
+    = settings.getSetting( SimGuiSettings::Key::ObjectColor ).value< QList<QColor> >();
+  QColor c = QColorDialog::getColor( objectColorList[objectIndex] );
+  if ( !c.isValid() ) {
+    std::cout << "No color choosen" << std::endl; 
+    return;
+  }
+  objectColorList[ objectIndex ] = c;
+  
+  // save the color list changes back into settings
+  QVariant v;
+  v.setValue( objectColorList );
+  settings.setSetting( SimGuiSettings::Key::ObjectColor, v );
+
+  // change in MabdiSimulatedSensor
+  sensor.setObjectColor( objectIndex, c.redF(), c.greenF(), c.blueF() );
 
 }
 
