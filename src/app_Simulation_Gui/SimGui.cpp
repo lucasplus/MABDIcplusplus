@@ -100,7 +100,7 @@ void SimGui::environmentSetup()
 
   // background color
   QColor c = settings.getSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor ).value<QColor>();
-  sensor.renderer->SetBackground( c.redF(), c.greenF(), c.blueF() );
+  sensor.setBackgroundColor( c.redF(), c.greenF(), c.blueF() );
 }
 
 void SimGui::changeObjectColor(){
@@ -117,6 +117,7 @@ void SimGui::changeObjectColor(){
     if ( !c.isValid() ) { 
       return;
     }
+    sensor.setBackgroundColor( c.redF(), c.greenF(), c.blueF() );
     QVariant v;
     v.setValue( c );
     settings.setSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor, v );

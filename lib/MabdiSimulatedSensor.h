@@ -30,6 +30,7 @@ public:
   void addObject( const char* );
   void setObjectVisibility( int row, bool showObject );
   void setObjectColor( int row, double r, double g, double b );
+  void setBackgroundColor( double r, double g, double b );
   vtkSmartPointer<vtkRenderer> renderer;
 
 private:

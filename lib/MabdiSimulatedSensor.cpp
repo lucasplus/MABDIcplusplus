@@ -64,6 +64,10 @@ void MabdiSimulatedSensor::setObjectColor( int row, double r, double g, double b
   //renderer->Print( std::cout );
 }
 
+void MabdiSimulatedSensor::setBackgroundColor( double r, double g, double b ){
+  renderer->SetBackground( r, g, b );
+}
+
 vtkActor* MabdiSimulatedSensor::getActor( int row ){
   // get the actors from the renderer
   // use a vtkWeakPointer because the renderer is the owner
