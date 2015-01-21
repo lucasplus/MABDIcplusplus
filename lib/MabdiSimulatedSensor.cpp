@@ -28,8 +28,6 @@ void MabdiSimulatedSensor::addObject( const char* newObjectPath ){
   reader->SetFileName( newObjectPath );
   polyMapper->SetInputConnection( reader->GetOutputPort() );
   polyMapper->Update();
-  
-  //renderer->Print( std::cout );
 
   std::cout << "polymapper ScalarVisibility: " << polyMapper->GetScalarVisibility() << std::endl;
   
@@ -60,8 +58,6 @@ void MabdiSimulatedSensor::setObjectColor( int row, double r, double g, double b
   std::cout << "color: " << r << " " << g << " " << b << " " << std::endl; 
 
   actor->GetProperty()->SetColor( r, g, b );
-
-  //renderer->Print( std::cout );
 }
 
 void MabdiSimulatedSensor::setBackgroundColor( double r, double g, double b ){

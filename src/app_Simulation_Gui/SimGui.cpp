@@ -21,6 +21,8 @@ SimGui::SimGui(QWidget *parent) :
   std::cout << "SimGui::SimGui()" << std::endl;
 
   ui->setupUi(this);
+  ui->infoTextEdit->setTextColor( QColor( Qt::GlobalColor::blue ) );
+  ui->infoTextEdit->append( QString("hai") );
 
   // set up the environment (add objects and set colors)
   environmentSetup();
@@ -124,7 +126,6 @@ void SimGui::changeObjectColor(){
     return;
   }
   
-
   // list of all objects
   QList<QString> objectBaseName = settings.getObjectBaseName();
 

@@ -31,8 +31,6 @@ private:
   Ui::MainWidget *ui;
   SimGuiSettings settings;
 
-  //QActionGroup objectContextMenu;
-
   MabdiSimulatedSensor sensor;
   
   void environmentSetup();
