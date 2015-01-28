@@ -12,6 +12,8 @@
 
 #include <vtkProperty.h>
 
+#include <vtkSetGet.h>
+
 MabdiSimulatedSensor::MabdiSimulatedSensor(){
   std::cout << "MabdiSimulatedSensor::MabdiSimulatedSensor()" << std::endl;
 

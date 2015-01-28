@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
   myCallback->RenderWindowCamera = ActiveCamera;
   renderWindow->AddObserver( vtkCommand::RenderEvent, myCallback );
 
-  //styleTerrain->SetAutoAdjustCameraClippingRange( 0 );
+  styleTerrain->SetAutoAdjustCameraClippingRange( 0 );
 
   interactor->SetInteractorStyle( styleTerrain );
 

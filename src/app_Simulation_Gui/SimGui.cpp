@@ -3,6 +3,7 @@
 
 #include <vtkRenderWindow.h>
 
+#include "SimGuiDebug.h"
 #include "SimGuiSettings.h"
 
 #include <QList>
@@ -18,14 +19,13 @@ SimGui::SimGui(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::MainWidget)
 {
-  std::cout << "SimGui::SimGui()" << std::endl;
+  settings = new SimGuiSettings; // initialize settings (find/make file, set defaults)
 
   ui->setupUi(this);
-  ui->infoTextEdit->setTextColor( QColor( Qt::GlobalColor::blue ) );
-  ui->infoTextEdit->append( QString("hai") );
 
-  // set up the environment (add objects and set colors)
-  environmentSetup();
+  SimGuiDebug guiDebug( ui->infoTextEdit );
+
+  environmentSetup(); // set up the environment (add objects and set colors)
 
   ui->scenarioViewVTKWindow->GetRenderWindow()->AddRenderer( sensor.renderer );
 
@@ -40,8 +40,8 @@ void SimGui::environmentSetup()
   std::cout << "SimGui::environmentSetup() " << std::endl;
 
   // get name and file path for each object
-  QList<QString> objectBaseName = settings.getObjectBaseName();
-  QList<QString> objectFilePath = settings.getObjectFilePath();
+  QList<QString> objectBaseName = settings->getObjectBaseName();
+  QList<QString> objectFilePath = settings->getObjectFilePath();
 
   //
   // QListWidgetItem - for toggling objects on and off
@@ -93,7 +93,7 @@ void SimGui::environmentSetup()
   }
 
   QList<QColor> objectColorList 
-    = settings.getSetting( SimGuiSettings::Key::ObjectColor ).value< QList<QColor> >();
+    = settings->getSetting( SimGuiSettings::Key::ObjectColor ).value< QList<QColor> >();
   int count = 0;
   for( auto c : objectColorList ){
     sensor.setObjectColor( count, c.redF(), c.greenF(), c.blueF() );
@@ -101,7 +101,7 @@ void SimGui::environmentSetup()
   }
 
   // background color
-  QColor c = settings.getSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor ).value<QColor>();
+  QColor c = settings->getSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor ).value<QColor>();
   sensor.setBackgroundColor( c.redF(), c.greenF(), c.blueF() );
 }
 
@@ -114,7 +114,7 @@ void SimGui::changeObjectColor(){
   // is it the background?
   if( QString("background") == thisAction->objectName() ){
     QColor oldColor = 
-      settings.getSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor ).value< QColor >();
+      settings->getSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor ).value< QColor >();
     QColor c = QColorDialog::getColor( oldColor );
     if ( !c.isValid() ) { 
       return;
@@ -122,12 +122,12 @@ void SimGui::changeObjectColor(){
     sensor.setBackgroundColor( c.redF(), c.greenF(), c.blueF() );
     QVariant v;
     v.setValue( c );
-    settings.setSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor, v );
+    settings->setSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor, v );
     return;
   }
   
   // list of all objects
-  QList<QString> objectBaseName = settings.getObjectBaseName();
+  QList<QString> objectBaseName = settings->getObjectBaseName();
 
   // cycle through list, find index of object (by matching name)
   int objectIndex = 0; 
@@ -141,7 +141,7 @@ void SimGui::changeObjectColor(){
   // get the old color list from the settings and change it for the new color
   // unless the color choosen was invalid (user probably cancelled the QColorDialog)
   QList<QColor> objectColorList 
-    = settings.getSetting( SimGuiSettings::Key::ObjectColor ).value< QList<QColor> >();
+    = settings->getSetting( SimGuiSettings::Key::ObjectColor ).value< QList<QColor> >();
   QColor c = QColorDialog::getColor( objectColorList[objectIndex] );
   if ( !c.isValid() ) {
     std::cout << "No color choosen" << std::endl; 
@@ -152,7 +152,7 @@ void SimGui::changeObjectColor(){
   // save the color list changes back into settings
   QVariant v;
   v.setValue( objectColorList );
-  settings.setSetting( SimGuiSettings::Key::ObjectColor, v );
+  settings->setSetting( SimGuiSettings::Key::ObjectColor, v );
 
   // change in MabdiSimulatedSensor
   sensor.setObjectColor( objectIndex, c.redF(), c.greenF(), c.blueF() );
@@ -182,5 +182,6 @@ void SimGui::objectListChanged( QListWidgetItem* item )
 SimGui::~SimGui()
 {
   delete ui;
+  delete settings;
 }
  

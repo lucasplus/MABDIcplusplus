@@ -11,18 +11,21 @@
 #include <QList>
 #include <QColor>
 
+#include "qdebug.h"
 
 SimGuiSettings::SimGuiSettings()
 {
   std::cout << "SimGuiSettings::SimGuiSettings()" << std::endl;
   
   // get the base name of the executable and use it to name the configuration file
-  // note: CMake should use this same file name to prefill the configuration file
+  // note: CMake should use this same file name to prefill the configuration file (if needed)
   //       It will sit in the directory of the executable 
   //       Name of the file: <executable_name>_config.ini
 
   QString appName = QFileInfo( QApplication::applicationFilePath() ).baseName();
   std::cout << "Executable name: " << appName.toStdString() << std::endl;
+
+  qDebug() << "cow " << appName;
 
   QString configFilePath = QApplication::applicationDirPath() 
     + "/" + appName + "_config.ini";

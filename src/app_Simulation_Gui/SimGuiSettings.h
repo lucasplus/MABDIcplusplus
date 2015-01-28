@@ -47,7 +47,6 @@ private:
   QList<QString> objectBaseName;
   QList<QString> objectFilePath;
 
-
   void writeDefaults();
   void writeObjectColorDefault();
   void getDirectoryInfo();

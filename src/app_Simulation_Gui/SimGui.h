@@ -28,8 +28,8 @@ private slots:
   void changeObjectColor();
 
 private:
-  Ui::MainWidget *ui;
-  SimGuiSettings settings;
+  Ui::MainWidget* ui;
+  SimGuiSettings* settings;
 
   MabdiSimulatedSensor sensor;
   
