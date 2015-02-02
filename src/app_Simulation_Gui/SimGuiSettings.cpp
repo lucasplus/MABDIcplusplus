@@ -15,21 +15,17 @@
 
 SimGuiSettings::SimGuiSettings()
 {
-  std::cout << "SimGuiSettings::SimGuiSettings()" << std::endl;
-  
   // get the base name of the executable and use it to name the configuration file
   // note: CMake should use this same file name to prefill the configuration file (if needed)
   //       It will sit in the directory of the executable 
   //       Name of the file: <executable_name>_config.ini
 
   QString appName = QFileInfo( QApplication::applicationFilePath() ).baseName();
-  std::cout << "Executable name: " << appName.toStdString() << std::endl;
-
-  qDebug() << "cow " << appName;
+  qDebug() << "Executable name: " << appName;
 
   QString configFilePath = QApplication::applicationDirPath() 
     + "/" + appName + "_config.ini";
-  std::cout << "Config file: " << configFilePath.toStdString() << std::endl;
+  qDebug() << "Config file: " << configFilePath;
   
   // have to register types unkown to QtCore (its a QVariant thing)
   qRegisterMetaType< QList<QColor> >("QList<QColor>");
@@ -45,7 +41,7 @@ SimGuiSettings::SimGuiSettings()
   writeDefaults();
 
   QString fileName = settings->fileName();
-  std::cout << "Config file out: " << fileName.toStdString() << std::endl;
+  qDebug() << "Config file out: " << fileName;
 }
 
 void SimGuiSettings::writeDefaults()
@@ -137,7 +133,7 @@ void SimGuiSettings::setSetting( SimGuiSettings::Key inKey, QVariant inVariant )
 
 SimGuiSettings::~SimGuiSettings()
 {
-  std::cout << "SimGuiSettings::~SimGuiSettings()" << std::endl;
+  qDebug() << "SimGuiSettings destructor";
   delete settings;
 }
 

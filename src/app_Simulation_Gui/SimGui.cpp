@@ -15,17 +15,28 @@
 
 #include <QColorDialog>
 
+#include "qdebug.h"
+
 SimGui::SimGui(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::MainWidget)
 {
-  settings = new SimGuiSettings; // initialize settings (find/make file, set defaults)
-
+  //
+  // initialize
+  //
+  
+  // create the gui. A Qt thing
   ui->setupUi(this);
-
+  
+  // class that will handle Qt and MABDI debug messages
+  // it displays the messages in the application
   SimGuiDebug guiDebug( ui->infoTextEdit );
 
-  environmentSetup(); // set up the environment (add objects and set colors)
+  // find or make settings file, set defaults
+  settings = new SimGuiSettings; 
+
+  // set up the environment: add objects and set colors
+  environmentSetup(); 
 
   ui->scenarioViewVTKWindow->GetRenderWindow()->AddRenderer( sensor.renderer );
 
@@ -37,11 +48,11 @@ SimGui::SimGui(QWidget *parent) :
 // call when the user changes directory where *.stl files are saved
 void SimGui::environmentSetup()
 {
-  std::cout << "SimGui::environmentSetup() " << std::endl;
-
   // get name and file path for each object
   QList<QString> objectBaseName = settings->getObjectBaseName();
   QList<QString> objectFilePath = settings->getObjectFilePath();
+
+  qDebug() << "File paths to objects: " << objectFilePath;
 
   //
   // QListWidgetItem - for toggling objects on and off
@@ -106,10 +117,11 @@ void SimGui::environmentSetup()
 }
 
 void SimGui::changeObjectColor(){
-  std::cout << "SimGui::changeObjectColor()" << std::endl;
 
   // get which action sent the signal and its objectName
   QAction* thisAction = qobject_cast<QAction*>( sender() );
+
+  qDebug() << "Change color of object: " << thisAction->objectName();
 
   // is it the background?
   if( QString("background") == thisAction->objectName() ){
@@ -132,7 +144,6 @@ void SimGui::changeObjectColor(){
   // cycle through list, find index of object (by matching name)
   int objectIndex = 0; 
   for( auto i : objectBaseName ){
-    std::cout << "i is: " << i.toStdString() << std::endl;
     if ( i == thisAction->objectName() ) {
       objectIndex = objectBaseName.indexOf( i );
     }
@@ -144,7 +155,7 @@ void SimGui::changeObjectColor(){
     = settings->getSetting( SimGuiSettings::Key::ObjectColor ).value< QList<QColor> >();
   QColor c = QColorDialog::getColor( objectColorList[objectIndex] );
   if ( !c.isValid() ) {
-    std::cout << "No color choosen" << std::endl; 
+    qWarning() << "No color choosen"; 
     return;
   }
   objectColorList[ objectIndex ] = c;
@@ -161,15 +172,16 @@ void SimGui::changeObjectColor(){
 
 void SimGui::objectListChanged( QListWidgetItem* item )
 {
-  std::cout << "SimGui::objectListChanged(): " 
-    << item->text().toStdString() << std::endl;
-
   // which row of the QListWidget?
-  int row;
-  row = item->listWidget()->row( item );
+  int row = item->listWidget()->row( item );
 
-  // set visible or hide
+  // was it visible or was it hidden
   Qt::CheckState state = item->checkState();
+  
+  qDebug() << "Visibility state of object in row (zero based index): " << row 
+    << " New state: " << ( state==Qt::CheckState::Checked );
+  
+  // set visible or hide
   if( state==Qt::CheckState::Checked )
     sensor.setObjectVisibility( row, true );
   else

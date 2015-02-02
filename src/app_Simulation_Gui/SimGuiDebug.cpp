@@ -25,13 +25,13 @@ namespace{
     int line = context.line;
 
     QString bigMessage;
-    bigMessage.append("(");
+    bigMessage.append("[ ");
     bigMessage.append(file);
-    bigMessage.append(":");
-    bigMessage.append( QString(context.function) );
-    bigMessage.append(":");
+    bigMessage.append(" : ");
     bigMessage.append( QString::number( line ) );
-    bigMessage.append(") - ");
+    bigMessage.append(" : ");
+    bigMessage.append( QString(context.function) );
+    bigMessage.append(" ] \n  ");
     bigMessage.append(msg);
 
     //
