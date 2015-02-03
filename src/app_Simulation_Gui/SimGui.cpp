@@ -38,7 +38,7 @@ SimGui::SimGui(QWidget *parent) :
   // set up the environment: add objects and set colors
   environmentSetup(); 
 
-  ui->scenarioViewVTKWindow->GetRenderWindow()->AddRenderer( sensor.renderer );
+  ui->scenarioViewVTKWindow->GetRenderWindow()->AddRenderer( engine.sensor.renderer );
 
   connect( ui->objectListWidget, &QListWidget::itemChanged, 
     this, &SimGui::objectListChanged );
@@ -100,20 +100,20 @@ void SimGui::environmentSetup()
   //
 
   for(auto filePath : objectFilePath ){
-    sensor.addObject( filePath.toStdString().c_str() );
+    engine.sensor.addObject( filePath.toStdString().c_str() );
   }
 
   QList<QColor> objectColorList 
     = settings->getSetting( SimGuiSettings::Key::ObjectColor ).value< QList<QColor> >();
   int count = 0;
   for( auto c : objectColorList ){
-    sensor.setObjectColor( count, c.redF(), c.greenF(), c.blueF() );
+    engine.sensor.setObjectColor( count, c.redF(), c.greenF(), c.blueF() );
     count++;
   }
 
   // background color
   QColor c = settings->getSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor ).value<QColor>();
-  sensor.setBackgroundColor( c.redF(), c.greenF(), c.blueF() );
+  engine.sensor.setBackgroundColor( c.redF(), c.greenF(), c.blueF() );
 }
 
 void SimGui::changeObjectColor(){
@@ -131,7 +131,7 @@ void SimGui::changeObjectColor(){
     if ( !c.isValid() ) { 
       return;
     }
-    sensor.setBackgroundColor( c.redF(), c.greenF(), c.blueF() );
+    engine.sensor.setBackgroundColor( c.redF(), c.greenF(), c.blueF() );
     QVariant v;
     v.setValue( c );
     settings->setSetting( SimGuiSettings::Key::ScenarioViewBackgroundColor, v );
@@ -166,7 +166,7 @@ void SimGui::changeObjectColor(){
   settings->setSetting( SimGuiSettings::Key::ObjectColor, v );
 
   // change in MabdiSimulatedSensor
-  sensor.setObjectColor( objectIndex, c.redF(), c.greenF(), c.blueF() );
+  engine.sensor.setObjectColor( objectIndex, c.redF(), c.greenF(), c.blueF() );
 
 }
 
@@ -183,9 +183,9 @@ void SimGui::objectListChanged( QListWidgetItem* item )
   
   // set visible or hide
   if( state==Qt::CheckState::Checked )
-    sensor.setObjectVisibility( row, true );
+    engine.sensor.setObjectVisibility( row, true );
   else
-    sensor.setObjectVisibility( row, false );
+    engine.sensor.setObjectVisibility( row, false );
 
   // have to rerender to show changes
   ui->scenarioViewVTKWindow->GetRenderWindow()->Render();

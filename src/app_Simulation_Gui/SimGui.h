@@ -9,6 +9,7 @@
 
 #include "SimGuiSettings.h"
 
+#include "MabdiEngine.h"
 #include "MabdiSimulatedSensor.h"
 
 namespace Ui {
@@ -31,7 +32,7 @@ private:
   Ui::MainWidget* ui;
   SimGuiSettings* settings;
 
-  MabdiSimulatedSensor sensor;
+  MabdiEngine engine;
   
   void environmentSetup();
 };
