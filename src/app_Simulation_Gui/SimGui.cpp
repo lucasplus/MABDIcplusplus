@@ -3,17 +3,23 @@
 
 #include <vtkRenderWindow.h>
 
+#include <string>
+#include <iostream>
+#include <sstream>
+
 #include "SimGuiDebug.h"
 #include "SimGuiSettings.h"
 
 #include <QList>
 #include <QString>
-
 #include <QVariant>
 
 #include <QAction>
 
 #include <QColorDialog>
+
+#include <functional>
+#include <string>
 
 #include "qdebug.h"
 
@@ -31,6 +37,7 @@ SimGui::SimGui(QWidget *parent) :
   // class that will handle Qt and MABDI debug messages
   // it displays the messages in the application
   SimGuiDebug guiDebug( ui->infoTextEdit );
+  engine.initializeDebugMessages( guiDebug.getMessageHandleFunction() );
 
   // find or make settings file, set defaults
   settings = new SimGuiSettings; 

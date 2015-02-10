@@ -4,6 +4,9 @@
 #include <QApplication>
 
 #include <QTextEdit>
+
+#include <functional>
+#include <string>
  
 // Class for printing debug information to the GUI's QTextEdit window
 // Qt:
@@ -18,6 +21,8 @@ class SimGuiDebug
 public:
   SimGuiDebug( QTextEdit *textEdit );
   ~SimGuiDebug();
+
+  std::function<void(std::string)> getMessageHandleFunction();
   
 };
 

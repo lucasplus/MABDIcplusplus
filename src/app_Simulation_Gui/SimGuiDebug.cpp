@@ -8,17 +8,19 @@
 
 #include "qdebug.h"
 
+#include <iostream>
+
 // qInstallMessageHandler has an error if the handler function is not in an anonymous namespace
 namespace{
-  
+
   QTextEdit* textEdit;  // need this pointer for use in the message handler
-  
+
   void messageHandlerQt(QtMsgType type, const QMessageLogContext & context, const QString & msg)
   {
     //
     // assemble the message
     //
-    
+
     QString filePath = QString( context.file );
     QString file = QFileInfo( filePath ).fileName();
 
@@ -58,6 +60,12 @@ namespace{
     }
   }
 
+  void messageHandleFunction( std::string inString ){
+    textEdit->setTextColor( QColor( Qt::GlobalColor::darkBlue ) );
+    textEdit->append( QString::fromStdString(inString) );
+    textEdit->setTextColor( QColor( Qt::GlobalColor::black ) );
+  }
+
 }
 
 SimGuiDebug::SimGuiDebug( QTextEdit* inTextEdit )
@@ -67,6 +75,12 @@ SimGuiDebug::SimGuiDebug( QTextEdit* inTextEdit )
   textEdit->setFontPointSize( 9 );  // make text a bit bigger 
   
   qInstallMessageHandler( messageHandlerQt );  // handler for qt messages
+}
+
+std::function<void(std::string)> SimGuiDebug::getMessageHandleFunction()
+{
+  std::function<void(std::string)> handle = &messageHandleFunction;
+  return handle;
 }
 
 SimGuiDebug::~SimGuiDebug()
