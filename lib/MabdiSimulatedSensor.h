@@ -1,6 +1,8 @@
 #ifndef MABDISIMULATEDSENSOR_H
 #define MABDISIMULATEDSENSOR_H
 
+#include "EasyLogging.h"
+
 #include <vtkSmartPointer.h>
 
 #include <vtkActor.h>

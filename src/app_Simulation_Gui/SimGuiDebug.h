@@ -17,11 +17,11 @@
 
 class SimGuiDebug
 {
- 
 public:
   SimGuiDebug( QTextEdit *textEdit );
   ~SimGuiDebug();
 
+  // get handle to the function that will be called when MABDI logs a message
   std::function<void(std::string)> getMessageHandleFunction();
   
 };

@@ -2,9 +2,6 @@
 #define MABDIENGINE_H
 
 #include <string>
-#include <iostream>
-#include <sstream>
-
 #include <functional>
 
 #include "MabdiSimulatedSensor.h"
@@ -17,12 +14,12 @@ class MabdiEngine
 {
 public:
   MabdiEngine();
-  MabdiSimulatedSensor sensor;
   
   // User application can provide MABDI a callable function that will be 
   // called when debug messages are written. See MabdiDebug.h
   void initializeDebugMessages( std::function<void(std::string)> );
-
+  
+  MabdiSimulatedSensor sensor;
 };
 
 #endif // MABDIENGINE_H
