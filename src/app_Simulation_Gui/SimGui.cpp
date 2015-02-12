@@ -3,10 +3,6 @@
 
 #include <vtkRenderWindow.h>
 
-#include <string>
-#include <iostream>
-#include <sstream>
-
 #include "SimGuiDebug.h"
 #include "SimGuiSettings.h"
 
