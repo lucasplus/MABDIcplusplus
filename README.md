@@ -21,7 +21,12 @@ that you write a script for a process that looks at your source code and
 generates a build solution. By build solution, I mean a project that can be
 compiled and run. For example, if you are on Windows you will use CMake to
 build a Visual Studio project of if you are on a Mac you can generate an Xcode
-project or a Makefile. This can be very useful, for example, if you want to get
+project or a Makefile. This can be very useful, for example, if you want your code to work in
+
+
+----------
+
+
 the new Visual Studio version. The idea is that you change your CMake generator
 (which compiler to use) and your source code stays the same. 
 
