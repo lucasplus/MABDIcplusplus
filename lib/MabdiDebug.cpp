@@ -34,7 +34,7 @@ void MabdiDebug::handle( const el::LogDispatchData* data )
   bigMessage.append( std::to_string( logMessage->line() ) );
   bigMessage.append(" : ");
   bigMessage.append( logMessage->func() );
-  bigMessage.append(" ] \n  ");
+  bigMessage.append(" ] \n  -- ");
   bigMessage.append( logMessage->message() );
 
   // use the installed handle to send

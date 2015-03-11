@@ -75,6 +75,11 @@ void SimGuiSettings::writeObjectColorDefault()
   for(auto i : objectFilePath){
     objectColorList << c;
   }
+
+  QVariant v;
+  QString thisQKey = keyMap[Key::ObjectColor];
+  v.setValue( objectColorList );
+  settings->setValue( thisQKey, v );
 }
 
 void SimGuiSettings::getDirectoryInfo()

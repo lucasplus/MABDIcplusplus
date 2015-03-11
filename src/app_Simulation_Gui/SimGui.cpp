@@ -45,6 +45,7 @@ SimGui::SimGui(QWidget *parent) :
 
   connect( ui->objectListWidget, &QListWidget::itemChanged, 
     this, &SimGui::objectListChanged );
+
 }
 
 
@@ -161,7 +162,7 @@ void SimGui::changeObjectColor(){
     qWarning() << "No color choosen"; 
     return;
   }
-  objectColorList[ objectIndex ] = c;
+  objectColorList.replace( objectIndex, c );
   
   // save the color list changes back into settings
   QVariant v;
@@ -177,6 +178,8 @@ void SimGui::objectListChanged( QListWidgetItem* item )
 {
   // which row of the QListWidget?
   int row = item->listWidget()->row( item );
+
+  
 
   // was it visible or was it hidden
   Qt::CheckState state = item->checkState();

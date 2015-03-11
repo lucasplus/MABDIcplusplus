@@ -93,7 +93,9 @@ int main(int argc, char *argv[])
   UTIL_VTK_INIT( MyCallbackClass            , myCallback            );
 
   UTIL_VTK_INIT( vtkCamera                  , ActiveCamera          );
-
+  
+  renderWindow->SetOffScreenRendering( 1 );
+  
   // window and renderer set-up
   renderWindow->AddRenderer( renderer );
   renderWindowImage->AddRenderer( rendererImage );
@@ -101,8 +103,6 @@ int main(int argc, char *argv[])
   
   renderWindow->SetSize( 640, 480 );
   renderWindowImage->SetSize( 640, 480 );
-
-  //renderWindow->SetOffScreenRendering( 1 );
 
   // Data Pipeline [1] - read 
   fileReader->SetFileName( "util/stl/environment/table.stl" );
@@ -152,6 +152,8 @@ int main(int argc, char *argv[])
 
   int isParallelProjection = ActiveCamera->GetParallelProjection();
   std::cout << " cam parallel projection " << isParallelProjection << std::endl;
+
+  renderWindow->Render();
 
   interactor->Start();
   

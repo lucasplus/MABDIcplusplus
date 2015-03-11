@@ -33,7 +33,7 @@ namespace{
     bigMessage.append( QString::number( line ) );
     bigMessage.append(" : ");
     bigMessage.append( QString(context.function) );
-    bigMessage.append(" ] \n  ");
+    bigMessage.append(" ] \n  -- ");
     bigMessage.append(msg);
 
     //
