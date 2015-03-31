@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 
   UTIL_VTK_INIT( vtkCamera                  , ActiveCamera          );
   
-  renderWindow->SetOffScreenRendering( 1 );
+  // renderWindow->SetOffScreenRendering( 1 );
   
   // window and renderer set-up
   renderWindow->AddRenderer( renderer );

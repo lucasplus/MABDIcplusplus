@@ -20,11 +20,13 @@ class MabdiSimulatedSensor
 {
 public:
   MabdiSimulatedSensor();
+  void setup( vtkRenderWindow* windowScene, vtkRenderWindow* windowDepth );
   void addObject( const char* );
   void setObjectVisibility( int row, bool showObject );
   void setObjectColor( int row, double r, double g, double b );
   void setBackgroundColor( double r, double g, double b );
   vtkSmartPointer<vtkRenderer> renderer;
+  vtkSmartPointer<vtkRenderer> rendererDepth;
 
 private:
   vtkActor* getActor( int row );  
