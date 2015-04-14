@@ -41,11 +41,9 @@ SimGui::SimGui(QWidget *parent) :
   // set up the environment: add objects and set colors
   environmentSetup(); 
 
-  //ui->scenarioViewVTKWindow->GetRenderWindow()->AddRenderer( engine.sensor.renderer );
-
-  //ui->enlargedViewVTKWindow->GetRenderWindow()->AddRenderer( engine.sensor.rendererDepth );
-
-  engine.sensor.setup( ui->scenarioViewVTKWindow->GetRenderWindow(), ui->enlargedViewVTKWindow->GetRenderWindow() );
+  engine.sensor.setup( 
+    ui->scenarioViewVTKWindow->GetRenderWindow() , 
+    ui->enlargedViewVTKWindow->GetRenderWindow() );
 
   connect( ui->objectListWidget, &QListWidget::itemChanged, 
     this, &SimGui::objectListChanged );

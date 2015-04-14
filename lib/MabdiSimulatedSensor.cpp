@@ -72,24 +72,20 @@ void MabdiSimulatedSensor::setup( vtkRenderWindow* windowScene, vtkRenderWindow*
   windowScene->AddRenderer( renderer );
   windowDepth->AddRenderer( rendererDepth );
 
-  //vtkNew<vtkWindowToImageFilter> filter;
   vtkSmartPointer<vtkWindowToImageFilter> filter = vtkSmartPointer<vtkWindowToImageFilter>::New();
   filter->SetInput( renderer->GetVTKWindow() );
   filter->SetInputBufferTypeToZBuffer();
 
-  //vtkNew<vtkImageMapper> imageMapper;
   vtkSmartPointer<vtkImageMapper> imageMapper = vtkSmartPointer<vtkImageMapper>::New();
   imageMapper->SetInputConnection( filter->GetOutputPort() );
   imageMapper->SetColorWindow( 1 );
   imageMapper->SetColorLevel( 0.5 );
 
-  //vtkNew<vtkActor2D> imageActor;
   vtkSmartPointer<vtkActor2D> imageActor = vtkSmartPointer<vtkActor2D>::New();
   imageActor->SetMapper( imageMapper );
 
   rendererDepth->AddActor( imageActor );
 
-  //vtkNew<MyCallbackClass> myCallback;
   vtkSmartPointer<MyCallbackClass> myCallback = vtkSmartPointer<MyCallbackClass>::New();
   myCallback->FilterSource = filter;
   myCallback->RenderWindowSource = rendererDepth->GetRenderWindow();
@@ -97,12 +93,10 @@ void MabdiSimulatedSensor::setup( vtkRenderWindow* windowScene, vtkRenderWindow*
 
   renderer->GetActiveCamera()->SetViewAngle( 60.0 );
   renderer->GetActiveCamera()->SetClippingRange( 0.5, 10.0 );
-  //rendererDepth->GetRenderWindow()->GetInteractor()->GetInteractorStyle()->SetAutoAdjustCameraClippingRange( 0 );
-
-  vtkRenderWindowInteractor *iren=renderer->GetRenderWindow()->GetInteractor();
-  vtkInteractorStyle *s=
-    static_cast<vtkInteractorStyle *>(iren->GetInteractorStyle());
-  s->SetAutoAdjustCameraClippingRange( 0 );
+  
+  vtkSmartPointer<vtkInteractorStyle> style = 
+    static_cast<vtkInteractorStyle *>(renderer->GetRenderWindow()->GetInteractor()->GetInteractorStyle());
+  style->SetAutoAdjustCameraClippingRange( 0 );
 
   renderer->GetRenderWindow()->AddObserver( vtkCommand::RenderEvent, myCallback );
 }
